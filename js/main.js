@@ -92,4 +92,4 @@ const createPhotoDescription = () => ({
 
 // Создание массива из 25 объектов:
 const arrayOfPhotos = Array.from({length: POST_COUNT}, createPhotoDescription);
-console.log(arrayOfPhotos);
+// console.log(arrayOfPhotos);
