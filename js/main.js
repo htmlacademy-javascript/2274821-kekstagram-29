@@ -27,6 +27,7 @@ const NAME = [
   'Виктор',
 ];
 
+const POST_COUNT = 25;
 // Генерация случайного числа в диапазоне:
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -37,6 +38,26 @@ const getRandomInteger = (a, b) => {
 
 // Генерация случайного элемента из массива:
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
+
+// Генерация случайного неповторяющегося числа
+function createRandomIdFromRangeGenerator (min, max) {
+  const previousValues = [];
+
+  return function () {
+    let currentValue = getRandomInteger(min, max);
+    if (previousValues.length >= (max - min + 1)) {
+      return null;
+    }
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandomInteger(min, max);
+    }
+    previousValues.push(currentValue);
+    return currentValue;
+  };
+}
+
+const generateIdComment = createRandomIdFromRangeGenerator(1, 10000);
+const generateUrlPhoto = createRandomIdFromRangeGenerator(1, 25);
 
 // Создание коментария:
 // comments, массив объектов — список комментариев, оставленных другими пользователями к этой фотографии. Количество комментариев к каждой фотографии — случайное число от 0 до 30.
@@ -50,7 +71,7 @@ const getRandomArrayElement = (elements) => elements[getRandomInteger(0, element
 // У каждого комментария есть идентификатор — id — любое число. Идентификаторы не должны повторяться.
 // Поле avatar — это строка, значение которой формируется по правилу img/avatar-{{случайное число от 1 до 6}}.svg. Аватарки подготовлены в директории img.
 const createComment = () => ({
-  idComment: getRandomInteger(1, 10000),
+  idComment: generateIdComment(),
   avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
   message: getRandomArrayElement(MESSAGE),
   name: getRandomArrayElement(NAME),
@@ -62,7 +83,7 @@ const createComment = () => ({
 // likes, число — количество лайков, поставленных фотографии. Случайное число от 15 до 200.
 const createPhotoDescription = () => ({
   id: getRandomInteger(1, 25),
-  url: `photos/${getRandomInteger(1, 25)}.jpg`,
+  url: `photos/${generateUrlPhoto()}.jpg`,
   description: getRandomArrayElement(DESCRIPTION),
   likes: getRandomInteger(15, 200),
   comments: Array.from({length:getRandomInteger(0, 30)}, createComment),
@@ -70,5 +91,5 @@ const createPhotoDescription = () => ({
 // console.log(createPhotoDescription());
 
 // Создание массива из 25 объектов:
-const arrayOfPhotos = Array.from({length: 25}, createPhotoDescription);
-// console.log(arrayOfPhotos);
+const arrayOfPhotos = Array.from({length: POST_COUNT}, createPhotoDescription);
+console.log(arrayOfPhotos);
