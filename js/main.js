@@ -1,2 +1,1 @@
-import {arrayOfPhotos} from './data.js';
-arrayOfPhotos();
+import './miniature-photo.js';
