@@ -13,17 +13,17 @@ const createPhotos = arrayOfPhotos();
 const allPosts = document.createDocumentFragment();
 
 // Склонируем шаблон и вставим в нужное место на странице, добавим сгенерированные данные
-createPhotos.forEach((post) => {
+createPhotos.forEach(({url, description, likes, comments}) => {
   // Клонируем шаблон
   const postElement = postTemplate.cloneNode(true);
   // Адрес изображения url подставьте как атрибут src изображения
-  postElement.querySelector('.picture__img').src = post.url;
+  postElement.querySelector('.picture__img').src = url;
   // Описание изображения description подставьте в атрибут alt изображения.
-  postElement.querySelector('.picture__img').alt = post.description;
+  postElement.querySelector('.picture__img').alt = description;
   // Количество лайков likes выведите в блок .picture__likes.
-  postElement.querySelector('.picture__likes').textContent = post.likes;
+  postElement.querySelector('.picture__likes').textContent = likes;
   // Количество комментариев comments выведите в блок .picture__comments.
-  postElement.querySelector('.picture__comments').textContent = post.comments.length;
+  postElement.querySelector('.picture__comments').textContent = comments.length;
   // Складываем все элементы в "коробочку"
   allPosts.append(postElement);
 });
