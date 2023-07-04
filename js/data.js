@@ -1,3 +1,5 @@
+// Создает массив с данными о публикациях
+
 import {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator} from './util.js';
 
 // description, строка — описание фотографии. Описание придумайте самостоятельно.
@@ -63,7 +65,7 @@ const createPhotoDescription = () => ({
   comments: Array.from({length:getRandomInteger(0, 30)}, createComment),
 });
 
-// Создание массива из 25 объектов:
-const arrayOfPhotos = () => Array.from({length: POST_COUNT}, createPhotoDescription);
+// Создание массива из 25 постов:
+const arrayOfPosts = Array.from({length: POST_COUNT}, createPhotoDescription);
 
-export {arrayOfPhotos};
+export {arrayOfPosts};

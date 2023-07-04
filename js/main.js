@@ -1,2 +1,4 @@
-import './create-posts.js';
-import './modal.js';
+import './create-miniature-posts.js';
+import './get-detailed-post.js';
+import './actions-modal.js';
+

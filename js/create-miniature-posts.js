@@ -1,5 +1,7 @@
-//Импортируем модуль для генерации данных
-import {arrayOfPhotos} from './data.js';
+// Создает миниатюры изображений на основе сгенерированного массива с данными
+
+//Импортируем сгенерированный массив с данными
+import {arrayOfPosts} from './data.js';
 
 // Ищем в разметке куда будем вставлять сгенерированные фотографии
 const allPostsList = document.querySelector('.pictures');
@@ -7,15 +9,17 @@ const allPostsList = document.querySelector('.pictures');
 //Ищем шаблон в разметке
 const postTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-const createPhotos = arrayOfPhotos();
+const createPhotos = arrayOfPosts;
 
 // Cоздаем "коробочку"
 const allPosts = document.createDocumentFragment();
 
 // Склонируем шаблон и вставим в нужное место на странице, добавим сгенерированные данные
-createPhotos.forEach(({url, description, likes, comments}) => {
+createPhotos.forEach(({id, url, description, likes, comments}) => {
   // Клонируем шаблон
   const postElement = postTemplate.cloneNode(true);
+  // Добавляем id
+  postElement.dataset.id = id;
   // Адрес изображения url подставьте как атрибут src изображения
   postElement.querySelector('.picture__img').src = url;
   // Описание изображения description подставьте в атрибут alt изображения.
@@ -29,3 +33,4 @@ createPhotos.forEach(({url, description, likes, comments}) => {
 });
 // Складываем в определенное место в разметке "коробочки" с разными постами
 allPostsList.append(allPosts);
+
