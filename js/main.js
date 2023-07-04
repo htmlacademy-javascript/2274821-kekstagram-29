@@ -1,1 +1,2 @@
-import './miniature-photo.js';
+import './create-posts.js';
+import './modal.js';
