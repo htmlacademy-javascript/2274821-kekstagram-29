@@ -1,7 +1,6 @@
 // Импортируем сгенерированные миниатюры фотографий
 import './create-posts.js';
 import {isEscapeKey} from './util.js';
-import {arrayOfPhotos} from '/data.js'
 
 // Получаем коллекцию со сгенерированными постами
 const collectionOfPosts = document.querySelectorAll('.picture');
@@ -17,6 +16,8 @@ const bigPhotoLikes = document.querySelector('.likes-count');
 const bigPhotoCountComments = document.querySelector('.comments-count');
 const bigPhotoDescription = document.querySelector('.social__caption');
 const bigPhotoComments = document.querySelector('.social__comment');
+const socialCommentsCount = document.querySelector('.social__comment-count');
+const commentsLoader = document.querySelector('.comments-loader');
 
 // Функция закрытия модального окна по кнопке ESС
 const onDocumentKeydown = (evt) => {
@@ -32,6 +33,12 @@ const openModal = () => {
   bigPhotoModal.classList.remove('hidden');
   // Закрытие по ESC
   document.addEventListener('keydown', onDocumentKeydown);
+  // После открытия окна спрячьте блоки счётчика комментариев
+  // .social__comment-count и загрузки новых комментариев .comments-loader, добавив им класс hidden
+  socialCommentsCount.classList.add('hidden');
+  commentsLoader.classList.add('hidden');
+  // После открытия окна добавьте тегу <body> класс modal-open, чтобы контейнер с фотографиями позади не прокручивался при скролле.
+  document.body.classList.add('modal-open');
 };
 
 // Создание контента модального окна
@@ -41,13 +48,13 @@ const renderModal = () => {
   bigPhotoLikes.textContent = likes;
   bigPhotoCountComments.textContent = comments.length;
   bigPhotoDescription.textContent = description;
-  bigPhotoComments.insertAdjacentHTML = <li class="social__comment"><img
-      class="social__picture"
-      src="{{аватар}}"
-      alt="{{имя комментатора}}"
-      width="35" height="35">
-  <p class="social__text">{{текст комментария}}</p>
-</li>
+//   bigPhotoComments.insertAdjacentHTML = <li class="social__comment"><img
+//       class="social__picture"
+//       src="{{аватар}}"
+//       alt="{{имя комментатора}}"
+//       width="35" height="35">
+//   <p class="social__text">{{текст комментария}}</p>
+// </li>
 };
 
 // Закрытие модального окна
@@ -55,6 +62,7 @@ const closeModal = () => {
   bigPhotoModal.classList.add('hidden');
   // Так как модальное окно закрыто, обработчик нам не нужен, поэтому удаляем его
   document.removeEventListener('keydown', onDocumentKeydown);
+  document.body.classList.remove('modal-open');
 };
 
 closeBigPhotoModal.addEventListener('click', () => {
