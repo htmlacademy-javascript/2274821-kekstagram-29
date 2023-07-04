@@ -84,7 +84,7 @@ closeBigPhotoModal.addEventListener('keydown', () => {
 // });
 
 const onListClick = (evt) => {
-  if (evt.target.matches('img')) {
+  if (evt.target.matches('img[class="picture__img"]')) {
     openModal();
     renderModal();
   }
