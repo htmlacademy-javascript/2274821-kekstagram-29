@@ -76,20 +76,20 @@ closeBigPhotoModal.addEventListener('keydown', () => {
 });
 
 // Если нажатие происходит на элемент коллекции, то модальное окно открывается и заполняется необходимым контентом
-collectionOfPosts.forEach((element) => {
-  element.addEventListener('click', () => {
+// collectionOfPosts.forEach((element) => {
+//   element.addEventListener('click', () => {
+//     openModal();
+//     renderModal();
+//   });
+// });
+
+const onListClick = (evt) => {
+  if (evt.target.matches('img')) {
     openModal();
     renderModal();
-  });
-});
-
-// Не работает...
-// const onListClick = (evt) => {
-//   if(evt.target.nodeName === 'a') {
-//     openModal();
-//   }
-// };
-// collectionOfPosts.addEventListener('click', onListClick);
+  }
+};
+collect.addEventListener('click', onListClick);
 
 // Почему это не работает??
 // for (let i = 0; i <= collectionOfPosts.length; i++) {
