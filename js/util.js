@@ -32,3 +32,4 @@ export {getRandomInteger};
 export {getRandomArrayElement};
 export {createRandomIdFromRangeGenerator};
 export {isEscapeKey};
+export {createArr};

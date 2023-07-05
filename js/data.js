@@ -1,7 +1,6 @@
 // Создает массив с данными о публикациях
 
 import {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator} from './util.js';
-
 // description, строка — описание фотографии. Описание придумайте самостоятельно.
 const DESCRIPTION = [
   'Люблю лето!',
