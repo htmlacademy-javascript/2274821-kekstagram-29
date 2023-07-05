@@ -33,6 +33,7 @@ const NAME = [
 const POST_COUNT = 25;
 const generateIdComment = createRandomIdFromRangeGenerator(1, 10000);
 const generateUrlPhoto = createRandomIdFromRangeGenerator(1, 25);
+const generateIdPhoto = createRandomIdFromRangeGenerator(1, 25);
 
 // Создание коментария:
 // comments, массив объектов — список комментариев, оставленных другими пользователями к этой фотографии. Количество комментариев к каждой фотографии — случайное число от 0 до 30.
@@ -57,7 +58,7 @@ const createComment = () => ({
 // url, строка — адрес картинки вида photos/{{i}}.jpg, где {{i}} — это число от 1 до 25. Адреса картинок не должны повторяться.
 // likes, число — количество лайков, поставленных фотографии. Случайное число от 15 до 200.
 const createPhotoDescription = () => ({
-  id: getRandomInteger(1, 25),
+  id: generateIdPhoto(),
   url: `photos/${generateUrlPhoto()}.jpg`,
   description: getRandomArrayElement(DESCRIPTION),
   likes: getRandomInteger(15, 200),
