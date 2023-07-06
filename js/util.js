@@ -28,7 +28,4 @@ function createRandomIdFromRangeGenerator (min, max) {
 // Проверка, является ли нажатая кнопка Esc
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {getRandomInteger};
-export {getRandomArrayElement};
-export {createRandomIdFromRangeGenerator};
-export {isEscapeKey};
+export {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey};

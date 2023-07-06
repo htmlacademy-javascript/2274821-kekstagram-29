@@ -1,24 +1,12 @@
 // Создает список комментариев под фотографией
 
-// Список комментариев под фотографией: комментарии должны вставляться в блок .social__comments.
-// Разметка каждого комментария должна выглядеть так:
-
-// <li class="social__comment">
-//     <img
-//         class="social__picture"
-//         src="{{аватар}}"
-//         alt="{{имя комментатора}}"
-//         width="35" height="35">
-//     <p class="social__text">{{текст комментария}}</p>
-// </li>
-
 import { arrayOfPosts } from './data.js';
 
 // Список всех комментариев
 const bigPhotoComments = document.querySelector('.social__comments');
 const templateComment = document.querySelector('.social__comment');
 
-const renderCommets = (postId) => {
+const renderComments = (postId) => {
   const clickPost = arrayOfPosts.find((post) => postId === post.id);
   const currentComments = clickPost.comments;
   // Создаем коробочку для комментариев
@@ -39,5 +27,5 @@ const renderCommets = (postId) => {
   bigPhotoComments.append(commentsContainer);
 };
 
-export {renderCommets};
+export {renderComments};
 

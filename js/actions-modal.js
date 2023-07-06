@@ -2,32 +2,13 @@
 
 import {isEscapeKey} from './util.js';
 import {createModalContent} from './get-detailed-post.js';
-import { renderCommets } from './comments-list.js';
-import './comments-list.js';
+import {renderComments} from './comments-list.js';
 
 const collectionPosts = document.querySelector('.pictures');
 const socialCommentsCount = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
 const bigPhotoModal = document.querySelector('.big-picture');
 const closeBigPhotoModal = document.querySelector('.big-picture__cancel');
-
-// <Закрытие модального окна>
-const closeModal = () => {
-  bigPhotoModal.classList.add('hidden');
-  // Так как модальное окно закрыто, обработчик нам не нужен, поэтому удаляем его
-  // document.removeEventListener('keydown', onDocumentKeydown);
-  document.body.classList.remove('modal-open');
-};
-// Закрытие модального окна по нажатию на крестик
-closeBigPhotoModal.addEventListener('click', () => {
-  closeModal();
-});
-// Закрытие модального окна по нажатию на Esc
-closeBigPhotoModal.addEventListener('keydown', () => {
-  if(isEscapeKey){
-    closeModal();
-  }
-});
 
 // Функция закрытия модального окна по кнопке ESС
 const onDocumentKeydown = (evt) => {
@@ -37,12 +18,34 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
+// <Закрытие модального окна>
+const closeModal = () => {
+  bigPhotoModal.classList.add('hidden');
+  // Так как модальное окно закрыто, обработчик нам не нужен, поэтому удаляем его
+  document.removeEventListener('keydown', onDocumentKeydown);
+  document.body.classList.remove('modal-open');
+};
+// Закрытие модального окна по нажатию на крестик
+closeBigPhotoModal.addEventListener('click', () => {
+  closeModal();
+});
+// Закрытие модального окна по нажатию на Esc
+window.addEventListener('keydown', () => {
+  if(isEscapeKey){
+    closeModal();
+  }
+});
+
 // <Открытие модального окна>
 const openModal = () => {
   // Показать окно
   bigPhotoModal.classList.remove('hidden');
+  // Закрытие модального окна по нажатию на крестик
+  closeBigPhotoModal.addEventListener('click', () => {
+    closeModal();
+  });
   // Закрытие по ESC
-  document.addEventListener('keydown', onDocumentKeydown, {once: true});
+  document.addEventListener('keydown', onDocumentKeydown);
   // После открытия окна спрячьте блоки счётчика комментариев
   // .social__comment-count и загрузки новых комментариев .comments-loader, добавив им класс hidden
   socialCommentsCount.classList.add('hidden');
@@ -58,7 +61,7 @@ collectionPosts.addEventListener('click', (evt) => {
   if(target !== null) {
     postId = Number(target.dataset.id);
   }
-  renderCommets(postId);
+  renderComments(postId);
   createModalContent(postId);
   openModal();
 });
