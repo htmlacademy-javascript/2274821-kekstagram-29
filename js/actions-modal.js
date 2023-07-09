@@ -77,53 +77,48 @@ const createComments = (postId) => {
   return arrayOfComments;
 };
 
+// Загружаем определенное количество комментов
+const showSomeComments = () => {
+  bigPhotoComments.innerHTML = '';
+  shownComments.textContent = shown;
+  for (let i = 0; i < shown; i++) {
+    bigPhotoComments.append(arrayOfComments[i]);
+  }
+};
+
+// Загружаем в коллекцию нужный кусочек комментов
+const showPartComments = () => {
+  bigPhotoComments.innerHTML = '';
+  shownComments.textContent = shown;
+  const part = arrayOfComments.slice(0, shown);
+  for (let a = 0; a < part.length; a++) {
+    bigPhotoComments.append(part[a]);
+  }
+};
+
 // Показываем нужное количество комментариев
 const showComments = () => {
-  // Очистищаем коллекцию
-  bigPhotoComments.innerHTML = '';
+  // Если комментариев меньше, чем QUANTITY_OF_COMMENTS, то выводим те. что есть и скрываем кнопку "Загрузить еще"
   if (arrayOfComments.length < QUANTITY_OF_COMMENTS) {
-    // Скрываем кнопку "загрузить еще"
     commentsLoader.classList.add('hidden');
-    // Заменяем значение показанных комментов
-    shownComments.textContent = arrayOfComments.length;
-    // Показываем комменты
-    const wrapper = document.createDocumentFragment();
-    for (let i = 0; i < arrayOfComments.length; i++) {
-      wrapper.append(arrayOfComments[i]);
-    }
-    bigPhotoComments.innerHTML = '';
-    bigPhotoComments.append(wrapper);
+    shown = arrayOfComments.length;
+    showSomeComments();
     arrayOfComments.length = 0;
+    // Если комментариев больше, чем QUANTITY_OF_COMMENTS, то показываем кнопку "Загрузить еще" и показываем первые 5 комментариев
   } else {
     commentsLoader.classList.remove('hidden');
-
-    // Cоздаем первые 5 комметов
     shown = QUANTITY_OF_COMMENTS;
-    bigPhotoComments.innerHTML = '';
-    for (let i = 0; i < QUANTITY_OF_COMMENTS; i++) {
-      bigPhotoComments.append(arrayOfComments[i]);
-    }
+    showSomeComments();
     // Создаем обработчик по клику на "Загрузить еще"
     commentsLoader.addEventListener('click', () => {
+      // Если количество оставшихся непоказанных комментариев больше, чем QUANTITY_OF_COMMENTS, то добавляем еще кусочек комментариев равный QUANTITY_OF_COMMENTS
       if (arrayOfComments.length - shown >= QUANTITY_OF_COMMENTS) {
         shown += QUANTITY_OF_COMMENTS;
-        // Заменяем значение показанных комментов
-        shownComments.textContent = shown;
-        // Забираем нужный кусочек комментов из изначального массива
-        bigPhotoComments.innerHTML = '';
-        const part = arrayOfComments.slice(0, shown);
-        for (let a = 0; a < part.length; a++) {
-          bigPhotoComments.append(part[a]);
-        }
+        showPartComments();
       } else {
+        // Если количество оставшихся непоказанных комментариев меньше, чем QUANTITY_OF_COMMENTS, то показываем те, что остались и скрываем "Загрузить еще"
         shown += arrayOfComments.length - shown;
-        shownComments.textContent = shown;
-        bigPhotoComments.innerHTML = '';
-        const part = arrayOfComments.slice(0, shown);
-        for (let a = 0; a < part.length; a++) {
-          bigPhotoComments.append(part[a]);
-        }
-        // Скрываем кнопку "загрузить еще"
+        showPartComments();
         commentsLoader.classList.add('hidden');
       }
     });
