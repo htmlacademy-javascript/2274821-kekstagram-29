@@ -1,18 +1,23 @@
 // Показывает и скрывает модальное окно
+const QUANTITY_OF_COMMENTS = 5;
 
 import {isEscapeKey} from './util.js';
 import {arrayOfPosts} from './data.js';
-import {renderComments} from './comments-list.js';
 
 const collectionPosts = document.querySelector('.pictures');
-const socialCommentsCount = document.querySelector('.social__comment-count');
-const commentsLoader = document.querySelector('.comments-loader');
 const bigPhotoModal = document.querySelector('.big-picture');
 const closeBigPhotoModal = document.querySelector('.big-picture__cancel');
 const bigPhotoImage = document.querySelector('.big-picture__img').querySelector('img');
 const bigPhotoLikes = document.querySelector('.likes-count');
 const bigPhotoCountComments = document.querySelector('.comments-count');
 const bigPhotoDescription = document.querySelector('.social__caption');
+const bigPhotoComments = document.querySelector('.social__comments');
+const templateComment = document.querySelector('.social__comment');
+const commentsLoader = document.querySelector('.social__comments-loader');
+const shownComments = document.querySelector('.shown-comments');
+const arrayOfComments = [];
+let shown = 0;
+
 
 // <Закрытие модального окна>
 const closeModal = () => {
@@ -32,10 +37,6 @@ const openModal = () => {
   });
   // Закрытие по ESC
   window.addEventListener('keydown', onDocumentKeydown);
-  // После открытия окна спрячьте блоки счётчика комментариев
-  // .social__comment-count и загрузки новых комментариев .comments-loader, добавив им класс hidden
-  socialCommentsCount.classList.add('hidden');
-  commentsLoader.classList.add('hidden');
   // После открытия окна добавьте тегу <body> класс modal-open, чтобы контейнер с фотографиями позади не прокручивался при скролле.
   document.body.classList.add('modal-open');
 };
@@ -58,6 +59,54 @@ const createModalContent = (postId) => {
   bigPhotoDescription.textContent = description;
 };
 
+// Создает список комментариев под фотографией
+const createComments = (postId) => {
+  const clickPost = arrayOfPosts.find((post) => postId === post.id);
+  const currentComments = clickPost.comments;
+
+  currentComments.forEach(({avatar, name, message}) => {
+    // Копируем "шаблон" комментария из разметки
+    const comment = templateComment.cloneNode(true);
+    // Заменяем данные
+    comment.querySelector('.social__picture').src = avatar;
+    comment.querySelector('.social__picture').alt = name;
+    comment.querySelector('.social__text').textContent = message;
+    // Добавляем комментарии в массив
+    arrayOfComments.push(comment);
+  });
+};
+
+// количество показанных комментариев
+const showComments = () => {
+  // Очистищаем коллекцию
+  bigPhotoComments.innerHTML = '';
+  if (arrayOfComments.length < QUANTITY_OF_COMMENTS) {
+    // Скрываем кнопку "загрузить еще"
+    commentsLoader.classList.add('hidden');
+    // Заменяем значение показанных комментов
+    shownComments.textContent = arrayOfComments.length;
+    // Показываем комменты
+    const wrapper = document.createDocumentFragment();
+    for (let i = 0; i < arrayOfComments.length; i++) {
+      wrapper.append(arrayOfComments[i]);
+    }
+    bigPhotoComments.innerHTML = '';
+    bigPhotoComments.append(wrapper);
+  } else {
+    commentsLoader.classList.remove('hidden');
+    const bigWrapper = document.createDocumentFragment();
+    // Cоздаем первые 5 комметов
+    for (let i = 0; i < QUANTITY_OF_COMMENTS; i++) {
+      bigWrapper.append(arrayOfComments[i]);
+    }
+    bigPhotoComments.innerHTML = '';
+    bigPhotoComments.append(bigWrapper);
+    commentsLoader.addEventListener('click', () => {
+      shown += QUANTITY_OF_COMMENTS;
+    });
+  }
+};
+
 // Показывает наполненное окно по клику
 collectionPosts.addEventListener('click', (evt) => {
   const target = evt.target.closest('.picture');
@@ -65,7 +114,9 @@ collectionPosts.addEventListener('click', (evt) => {
   if(target !== null) {
     postId = Number(target.dataset.id);
   }
-  renderComments(postId);
+  createComments(postId);
+  showComments();
+  arrayOfComments.length = 0;
   createModalContent(postId);
   openModal();
 });
