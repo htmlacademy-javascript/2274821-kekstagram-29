@@ -74,9 +74,10 @@ const createComments = (postId) => {
     // Добавляем комментарии в массив
     arrayOfComments.push(comment);
   });
+  return arrayOfComments;
 };
 
-// количество показанных комментариев
+// Показываем нужное количество комментариев
 const showComments = () => {
   // Очистищаем коллекцию
   bigPhotoComments.innerHTML = '';
@@ -92,17 +93,39 @@ const showComments = () => {
     }
     bigPhotoComments.innerHTML = '';
     bigPhotoComments.append(wrapper);
+    arrayOfComments.length = 0;
   } else {
     commentsLoader.classList.remove('hidden');
-    const bigWrapper = document.createDocumentFragment();
+
     // Cоздаем первые 5 комметов
-    for (let i = 0; i < QUANTITY_OF_COMMENTS; i++) {
-      bigWrapper.append(arrayOfComments[i]);
-    }
+    shown = QUANTITY_OF_COMMENTS;
     bigPhotoComments.innerHTML = '';
-    bigPhotoComments.append(bigWrapper);
+    for (let i = 0; i < QUANTITY_OF_COMMENTS; i++) {
+      bigPhotoComments.append(arrayOfComments[i]);
+    }
+    // Создаем обработчик по клику на "Загрузить еще"
     commentsLoader.addEventListener('click', () => {
-      shown += QUANTITY_OF_COMMENTS;
+      if (arrayOfComments.length - shown >= QUANTITY_OF_COMMENTS) {
+        shown += QUANTITY_OF_COMMENTS;
+        // Заменяем значение показанных комментов
+        shownComments.textContent = shown;
+        // Забираем нужный кусочек комментов из изначального массива
+        bigPhotoComments.innerHTML = '';
+        const part = arrayOfComments.slice(0, shown);
+        for (let a = 0; a < part.length; a++) {
+          bigPhotoComments.append(part[a]);
+        }
+      } else {
+        shown += arrayOfComments.length - shown;
+        shownComments.textContent = shown;
+        bigPhotoComments.innerHTML = '';
+        const part = arrayOfComments.slice(0, shown);
+        for (let a = 0; a < part.length; a++) {
+          bigPhotoComments.append(part[a]);
+        }
+        // Скрываем кнопку "загрузить еще"
+        commentsLoader.classList.add('hidden');
+      }
     });
   }
 };
@@ -116,7 +139,6 @@ collectionPosts.addEventListener('click', (evt) => {
   }
   createComments(postId);
   showComments();
-  arrayOfComments.length = 0;
   createModalContent(postId);
   openModal();
 });
