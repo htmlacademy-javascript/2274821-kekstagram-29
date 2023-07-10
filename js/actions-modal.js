@@ -26,7 +26,6 @@ const closeModal = () => {
   window.removeEventListener('keydown', onDocumentKeydown);
   document.body.classList.remove('modal-open');
   shown = 0;
-  bigPhotoComments.innerHTML = '';
   arrayOfComments.length = 0;
 };
 
@@ -66,7 +65,6 @@ const createModalContent = (postId) => {
 
 // Создает список комментариев под фотографией
 const createComments = (postId) => {
-  arrayOfComments.length = 0;
   const clickPost = arrayOfPosts.find((post) => postId === post.id);
   const currentComments = clickPost.comments;
 
@@ -106,15 +104,17 @@ const renderSomeComment = () => {
 };
 
 const showComments = () => {
+  bigPhotoComments.innerHTML = '';
   // Если комментариев меньше или равно QUANTITY_OF_COMMENTS, то выводим те, что есть и скрываем кнопку "Загрузить еще"
   if (arrayOfComments.length <= QUANTITY_OF_COMMENTS) {
     commentsLoader.classList.add('hidden');
     shown = arrayOfComments.length;
+    shownComments.textContent = shown;
     for (let i = 0; i < shown; i++) {
       bigPhotoComments.append(arrayOfComments[i]);
-    }
-    // Если комментариев больше, чем QUANTITY_OF_COMMENTS, то показываем кнопку "Загрузить еще", показываем первые 5 комментариев и добавляем слушатель на "Загрузить еще"
-  } else {
+    }}
+  // Если комментариев больше, чем QUANTITY_OF_COMMENTS, то показываем кнопку "Загрузить еще", показываем первые 5 комментариев и добавляем слушатель на "Загрузить еще"
+  else {
     commentsLoader.classList.remove('hidden');
     shown = QUANTITY_OF_COMMENTS;
     showPartComments();
@@ -124,14 +124,13 @@ const showComments = () => {
 
 // Показывает наполненное окно по клику
 collectionPosts.addEventListener('click', (evt) => {
-  shown = 0;
   const target = evt.target.closest('.picture');
   let postId;
   if(target !== null) {
     postId = Number(target.dataset.id);
   }
-  openModal();
   createModalContent(postId);
   createComments(postId);
   showComments();
+  openModal();
 });
