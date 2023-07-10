@@ -112,9 +112,9 @@ const showComments = () => {
     shownComments.textContent = shown;
     for (let i = 0; i < shown; i++) {
       bigPhotoComments.append(arrayOfComments[i]);
-    }}
-  // Если комментариев больше, чем QUANTITY_OF_COMMENTS, то показываем кнопку "Загрузить еще", показываем первые 5 комментариев и добавляем слушатель на "Загрузить еще"
-  else {
+    }
+  } else {
+    // Если комментариев больше, чем QUANTITY_OF_COMMENTS, то показываем кнопку "Загрузить еще", показываем первые 5 комментариев и добавляем слушатель на "Загрузить еще"
     commentsLoader.classList.remove('hidden');
     shown = QUANTITY_OF_COMMENTS;
     showPartComments();
