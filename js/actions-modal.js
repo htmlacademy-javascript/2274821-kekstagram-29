@@ -13,20 +13,22 @@ const bigPhotoCountComments = document.querySelector('.comments-count');
 const bigPhotoDescription = document.querySelector('.social__caption');
 const bigPhotoComments = document.querySelector('.social__comments');
 const templateComment = document.querySelector('.social__comment');
+const commentsAvatar = document.querySelector('.social__picture');
+const commentText = document.querySelector('.social__text');
 const commentsLoader = document.querySelector('.comments-loader');
 const shownComments = document.querySelector('.shown-comments');
 const arrayOfComments = [];
-let shown = 0;
-
+let countShownComments = 0;
+const onLoadButtonClick = () => renderSomeComment();
 
 // <Закрытие модального окна>
 const closeModal = () => {
   bigPhotoModal.classList.add('hidden');
   // Так как модальное окно закрыто, обработчик нам не нужен, поэтому удаляем его
   window.removeEventListener('keydown', onDocumentKeydown);
-  commentsLoader.removeEventListener('click', renderSomeComment);
+  commentsLoader.removeEventListener('click', onLoadButtonClick);
   document.body.classList.remove('modal-open');
-  shown = 0;
+  countShownComments = 0;
   arrayOfComments.length = 0;
 };
 
@@ -59,9 +61,9 @@ const createComments = (comments) => {
     // Копируем "шаблон" комментария из разметки
     const comment = templateComment.cloneNode(true);
     // Заменяем данные
-    comment.querySelector('.social__picture').src = avatar;
-    comment.querySelector('.social__picture').alt = name;
-    comment.querySelector('.social__text').textContent = message;
+    commentsAvatar.src = avatar;
+    commentsAvatar.alt = name;
+    commentText.textContent = message;
     // Добавляем комментарии в массив
     arrayOfComments.push(comment);
   });
@@ -81,8 +83,8 @@ const createModalContent = (postId) => {
 
 // Загружаем в коллекцию нужный кусочек комментов
 const showPartComments = () => {
-  shownComments.textContent = shown;
-  const part = arrayOfComments.slice(0, shown);
+  shownComments.textContent = countShownComments;
+  const part = arrayOfComments.slice(0, countShownComments);
   for (let a = 0; a < part.length; a++) {
     bigPhotoComments.append(part[a]);
   }
@@ -90,11 +92,11 @@ const showPartComments = () => {
 
 function renderSomeComment () {
   // Если количество оставшихся непоказанных комментариев больше, чем QUANTITY_OF_COMMENTS, то показываем 5 комментариев
-  if (arrayOfComments.length - shown > QUANTITY_OF_COMMENTS) {
-    shown += QUANTITY_OF_COMMENTS;
+  if (arrayOfComments.length - countShownComments > QUANTITY_OF_COMMENTS) {
+    countShownComments += QUANTITY_OF_COMMENTS;
   } else {
     // Если количество оставшихся непоказанных комментариев меньше, чем QUANTITY_OF_COMMENTS, то показываем те, что остались и скрываем "Загрузить еще"
-    shown += arrayOfComments.length - shown;
+    countShownComments += arrayOfComments.length - countShownComments;
     commentsLoader.classList.add('hidden');
   }
   showPartComments();
@@ -105,17 +107,17 @@ const showComments = () => {
   // Если комментариев меньше или равно QUANTITY_OF_COMMENTS, то выводим те, что есть и скрываем кнопку "Загрузить еще"
   if (arrayOfComments.length <= QUANTITY_OF_COMMENTS) {
     commentsLoader.classList.add('hidden');
-    shown = arrayOfComments.length;
-    shownComments.textContent = shown;
-    for (let i = 0; i < shown; i++) {
+    countShownComments = arrayOfComments.length;
+    shownComments.textContent = countShownComments;
+    for (let i = 0; i < countShownComments; i++) {
       bigPhotoComments.append(arrayOfComments[i]);
     }
   } else {
     // Если комментариев больше, чем QUANTITY_OF_COMMENTS, то показываем кнопку "Загрузить еще", показываем первые 5 комментариев и добавляем слушатель на "Загрузить еще"
     commentsLoader.classList.remove('hidden');
-    shown = QUANTITY_OF_COMMENTS;
+    countShownComments = QUANTITY_OF_COMMENTS;
     showPartComments();
-    commentsLoader.addEventListener('click', renderSomeComment);
+    commentsLoader.addEventListener('click', onLoadButtonClick);
   }
 };
 
