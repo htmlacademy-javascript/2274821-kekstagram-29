@@ -54,8 +54,8 @@ function onDocumentKeydown (evt) {
 }
 
 // Создает список комментариев под фотографией
-const createComments = (currentComments) => {
-  currentComments.forEach(({avatar, name, message}) => {
+const createComments = (comments) => {
+  comments.forEach(({avatar, name, message}) => {
     // Копируем "шаблон" комментария из разметки
     const comment = templateComment.cloneNode(true);
     // Заменяем данные
@@ -76,8 +76,7 @@ const createModalContent = (postId) => {
   bigPhotoLikes.textContent = likes;
   bigPhotoCountComments.textContent = comments.length;
   bigPhotoDescription.textContent = description;
-  const currentComments = currentPost.comments;
-  createComments(currentComments);
+  createComments(comments);
 };
 
 // Загружаем в коллекцию нужный кусочек комментов
