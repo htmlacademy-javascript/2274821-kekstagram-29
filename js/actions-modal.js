@@ -24,6 +24,7 @@ const closeModal = () => {
   bigPhotoModal.classList.add('hidden');
   // Так как модальное окно закрыто, обработчик нам не нужен, поэтому удаляем его
   window.removeEventListener('keydown', onDocumentKeydown);
+  commentsLoader.removeEventListener('click', renderSomeComment);
   document.body.classList.remove('modal-open');
   shown = 0;
   arrayOfComments.length = 0;
@@ -52,22 +53,8 @@ function onDocumentKeydown (evt) {
   }
 }
 
-// Функция, которая получает id поста, на который кликнули и подставляет в модальное окно его данные
-const createModalContent = (postId) => {
-  const currentPost = arrayOfPosts.find((post) => postId === post.id);
-  const {likes, url, comments, description} = currentPost;
-  bigPhotoImage.src = url;
-  bigPhotoLikes.textContent = likes;
-  bigPhotoCountComments.textContent = comments.length;
-  bigPhotoDescription.textContent = description;
-
-};
-
 // Создает список комментариев под фотографией
-const createComments = (postId) => {
-  const clickPost = arrayOfPosts.find((post) => postId === post.id);
-  const currentComments = clickPost.comments;
-
+const createComments = (currentComments) => {
   currentComments.forEach(({avatar, name, message}) => {
     // Копируем "шаблон" комментария из разметки
     const comment = templateComment.cloneNode(true);
@@ -81,6 +68,18 @@ const createComments = (postId) => {
   return arrayOfComments;
 };
 
+// Функция, которая получает id поста, на который кликнули и подставляет в модальное окно его данные
+const createModalContent = (postId) => {
+  const currentPost = arrayOfPosts.find((post) => postId === post.id);
+  const {likes, url, comments, description} = currentPost;
+  bigPhotoImage.src = url;
+  bigPhotoLikes.textContent = likes;
+  bigPhotoCountComments.textContent = comments.length;
+  bigPhotoDescription.textContent = description;
+  const currentComments = currentPost.comments;
+  createComments(currentComments);
+};
+
 // Загружаем в коллекцию нужный кусочек комментов
 const showPartComments = () => {
   shownComments.textContent = shown;
@@ -90,18 +89,17 @@ const showPartComments = () => {
   }
 };
 
-const renderSomeComment = () => {
+function renderSomeComment () {
   // Если количество оставшихся непоказанных комментариев больше, чем QUANTITY_OF_COMMENTS, то показываем 5 комментариев
   if (arrayOfComments.length - shown > QUANTITY_OF_COMMENTS) {
     shown += QUANTITY_OF_COMMENTS;
-    showPartComments();
   } else {
     // Если количество оставшихся непоказанных комментариев меньше, чем QUANTITY_OF_COMMENTS, то показываем те, что остались и скрываем "Загрузить еще"
     shown += arrayOfComments.length - shown;
-    showPartComments();
     commentsLoader.classList.add('hidden');
   }
-};
+  showPartComments();
+}
 
 const showComments = () => {
   bigPhotoComments.innerHTML = '';
@@ -130,7 +128,6 @@ collectionPosts.addEventListener('click', (evt) => {
     postId = Number(target.dataset.id);
   }
   createModalContent(postId);
-  createComments(postId);
   showComments();
   openModal();
 });
