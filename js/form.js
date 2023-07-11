@@ -1,13 +1,12 @@
 import {isEscapeKey} from './util.js';
-import {imageUploadForm} from './form-validate.js';
-// если навешивать обработчик на img-upload__input не срабатывает открытие окна. Почему?
 
 // Поле для загрузки фотографий
-const imageUploadInput = imageUploadForm.querySelector('img-upload__input');
+const imageUploadInput = document.querySelector('.img-upload__input');
 // Форма редактирования изображения
 const formEditor = document.querySelector('.img-upload__overlay');
 // Кнопка закрытия формы
-const uploadCancelButton = document.querySelector('.img-upload__cancel ');
+const uploadCancelButton = document.querySelector('.img-upload__cancel');
+
 
 // Открытие формы
 const openForm = () => {
@@ -22,7 +21,7 @@ const openForm = () => {
 
 // После выбора изображения (изменения значения поля .img-upload__input), показывается форма редактирования изображения.
 // отменять этот обработчик не надо
-imageUploadForm.addEventListener('change', () => {
+imageUploadInput.addEventListener('change', () => {
   openForm();
 });
 

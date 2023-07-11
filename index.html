@@ -116,10 +116,10 @@
                 <!-- Добавление хэш-тегов и комментария к изображению -->
                 <fieldset class="img-upload__text text">
                   <div class="img-upload__field-wrapper">
-                    <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег" minlength="2" maxlength="19">
+                    <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег" data-pristine-minlength="2" data-pristine-maxlength="19" data-pristine-maxlength-message="Хештег должен состоять из букв и чисел, начинаться с #, максимальная длина 20 символов">
                   </div>
                   <div class="img-upload__field-wrapper">
-                    <textarea class="text__description" name="description" placeholder="Ваш комментарий..." minlength="0" maxlength="140"></textarea>
+                    <textarea class="text__description" name="description" placeholder="Ваш комментарий..." data-pristine-maxlength="140" data-pristine-maxlength-message="Максимальная длина описания 140 символов"></textarea>
                   </div>
                 </fieldset>
 

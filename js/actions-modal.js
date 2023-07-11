@@ -45,7 +45,6 @@ const openModal = () => {
   window.addEventListener('keydown', onDocumentKeydown);
   // После открытия окна добавьте тегу <body> класс modal-open, чтобы контейнер с фотографиями позади не прокручивался при скролле.
   document.body.classList.add('modal-open');
-
 };
 
 // Функция закрытия модального окна по кнопке ESС
@@ -101,7 +100,6 @@ function renderSomeComment () {
     commentsLoader.classList.add('hidden');
   }
   showPartComments();
-
 }
 
 const showComments = () => {
@@ -122,7 +120,6 @@ const showComments = () => {
     commentsLoader.addEventListener('click', onLoadButtonClick);
   }
 };
-
 // Показывает наполненное окно по клику
 collectionPosts.addEventListener('click', (evt) => {
   bigPhotoComments.innerHTML = '';
@@ -130,8 +127,8 @@ collectionPosts.addEventListener('click', (evt) => {
   let postId;
   if(target !== null) {
     postId = Number(target.dataset.id);
+    createModalContent(postId);
+    showComments();
+    openModal();
   }
-  createModalContent(postId);
-  showComments();
-  openModal();
 });
