@@ -46,3 +46,5 @@ function onDocumentKeydown (evt) {
     closeForm();
   }
 }
+
+export {onDocumentKeydown};
