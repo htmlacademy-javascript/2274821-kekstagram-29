@@ -1,5 +1,8 @@
 import {isEscapeKey} from './util.js';
+import {pristine} from './form-validate.js';
 
+// Форма
+const imageUploadForm = document.querySelector('.img-upload__form');
 // Поле для загрузки фотографий
 const imageUploadInput = document.querySelector('.img-upload__input');
 // Форма редактирования изображения
@@ -32,6 +35,9 @@ const closeForm = () => {
   // Удаляем ненужные обработчики
   uploadCancelButton.removeEventListener('click', onCloseButtonClick);
   window.removeEventListener('keydown', onDocumentKeydown);
+  // сбрасываем значение формы
+  imageUploadForm.reset();
+  pristine.reset();
 };
 
 // Функция закрытия формы по клику на крестик

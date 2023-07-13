@@ -76,5 +76,5 @@ imageUploadForm.addEventListener('submit', (evt) => {
   pristine.validate();
 });
 
-export {imageUploadForm};
+export {imageUploadForm, pristine};
 
