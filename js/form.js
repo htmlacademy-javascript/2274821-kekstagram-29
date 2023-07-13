@@ -1,6 +1,10 @@
 import {isEscapeKey} from './util.js';
 import {pristine} from './form-validate.js';
+import './form-slider.js';
 
+const SCALE_STEP = 25;
+const SCALE_MIN = 25;
+const SCALE_MAX = 100;
 // Форма
 const imageUploadForm = document.querySelector('.img-upload__form');
 // Поле для загрузки фотографий
@@ -17,7 +21,31 @@ const scaleValue = document.querySelector('.scale__control--value');
 const scaleImage = document.querySelector('.img-upload__preview');
 let scaleNumber;
 
-// Открытие формы
+// <Масштаб изображения>
+// Получаем число из строки
+const getScaleNumber = (scaleString) => parseInt(scaleString.value, 10);
+
+// Уменьшение изображения
+const onMinButtonClick = () => {
+  scaleNumber = getScaleNumber(scaleValue);
+  if(scaleNumber > SCALE_MIN) {
+    scaleValue.value = `${scaleNumber - SCALE_STEP}%`;
+    const tramsformValue = `scale(${(scaleNumber - SCALE_STEP) / 100})`;
+    scaleImage.style.transform = tramsformValue;
+  }
+};
+
+// Увеличение изображения
+const onMaxButtonClick = () => {
+  scaleNumber = getScaleNumber(scaleValue);
+  if(scaleNumber < SCALE_MAX) {
+    scaleValue.value = `${scaleNumber + SCALE_STEP}%`;
+    const tramsformValue = `scale(${(scaleNumber + SCALE_STEP) / 100})`;
+    scaleImage.style.transform = tramsformValue;
+  }
+};
+
+// <Открытие формы>
 const openForm = () => {
   // У элемента .img-upload__overlay удаляется класс hidden, а body задаётся класс modal-open.
   formEditor.classList.remove('hidden');
@@ -26,6 +54,9 @@ const openForm = () => {
   uploadCancelButton.addEventListener('click', onCloseButtonClick);
   // Закрытие формы по нажатию на Esc
   window.addEventListener('keydown', onDocumentKeydown);
+  // Изменяем значение scaleValue.value(строка с масштабом в %)
+  scaleSmaller.addEventListener('click', onMinButtonClick);
+  scaleBigger.addEventListener('click', onMaxButtonClick);
 };
 
 // После выбора изображения (изменения значения поля .img-upload__input), показывается форма редактирования изображения.
@@ -34,13 +65,15 @@ imageUploadInput.addEventListener('change', () => {
   openForm();
 });
 
-// Закрытие формы
+// <Закрытие формы>
 const closeForm = () => {
   formEditor.classList.add('hidden');
   document.body.classList.remove('modal-open');
   // Удаляем ненужные обработчики
   uploadCancelButton.removeEventListener('click', onCloseButtonClick);
   window.removeEventListener('keydown', onDocumentKeydown);
+  scaleSmaller.removeEventListener('click', onMinButtonClick);
+  scaleBigger.removeEventListener('click', onMaxButtonClick);
   // сбрасываем значение формы
   imageUploadForm.reset();
   pristine.reset();
@@ -58,27 +91,5 @@ function onDocumentKeydown (evt) {
     closeForm();
   }
 }
-
-// <Масштаб изображения>
-// Получаем число из строки
-const getScaleNumber = (scaleString) => parseInt(scaleString.value, 10);
-// Изменяем значение scaleValue.value(строка с масштабом в %)
-scaleSmaller.addEventListener('click', () => {
-  scaleNumber = getScaleNumber(scaleValue);
-  if(getScaleNumber(scaleValue) > 25) {
-    scaleValue.value = `${scaleNumber - 25}%`;
-    const tramsformValue = `scale(${(scaleNumber - 25) / 100})`;
-    scaleImage.style.transform = tramsformValue;
-  }
-});
-
-scaleBigger.addEventListener('click', () => {
-  scaleNumber = getScaleNumber(scaleValue);
-  if(getScaleNumber(scaleValue) < 100) {
-    scaleValue.value = `${scaleNumber + 25}%`;
-    const tramsformValue = `scale(${(scaleNumber + 25) / 100})`;
-    scaleImage.style.transform = tramsformValue;
-  }
-});
 
 export {onDocumentKeydown};
