@@ -30,8 +30,7 @@ const onMinButtonClick = () => {
   scaleNumber = getScaleNumber(scaleValue);
   if(scaleNumber > SCALE_MIN) {
     scaleValue.value = `${scaleNumber - SCALE_STEP}%`;
-    const tramsformValue = `scale(${(scaleNumber - SCALE_STEP) / 100})`;
-    scaleImage.style.transform = tramsformValue;
+    scaleImage.style.transform = `scale(${(scaleNumber - SCALE_STEP) / 100})`;
   }
 };
 
@@ -40,8 +39,7 @@ const onMaxButtonClick = () => {
   scaleNumber = getScaleNumber(scaleValue);
   if(scaleNumber < SCALE_MAX) {
     scaleValue.value = `${scaleNumber + SCALE_STEP}%`;
-    const tramsformValue = `scale(${(scaleNumber + SCALE_STEP) / 100})`;
-    scaleImage.style.transform = tramsformValue;
+    scaleImage.style.transform = `scale(${(scaleNumber + SCALE_STEP) / 100})`;
   }
 };
 
