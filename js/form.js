@@ -10,6 +10,12 @@ const formEditor = document.querySelector('.img-upload__overlay');
 // Кнопка закрытия формы
 const uploadCancelButton = document.querySelector('.img-upload__cancel');
 
+// <Масштаб изображения>
+const scaleSmaller = document.querySelector('.scale__control--smaller');
+const scaleBigger = document.querySelector('.scale__control--bigger');
+const scaleValue = document.querySelector('.scale__control--value');
+const scaleImage = document.querySelector('.img-upload__preview');
+let scaleNumber;
 
 // Открытие формы
 const openForm = () => {
@@ -52,5 +58,27 @@ function onDocumentKeydown (evt) {
     closeForm();
   }
 }
+
+// <Масштаб изображения>
+// Получаем число из строки
+const getScaleNumber = (scaleString) => parseInt(scaleString.value, 10);
+// Изменяем значение scaleValue.value(строка с масштабом в %)
+scaleSmaller.addEventListener('click', () => {
+  scaleNumber = getScaleNumber(scaleValue);
+  if(getScaleNumber(scaleValue) > 25) {
+    scaleValue.value = `${scaleNumber - 25}%`;
+    const tramsformValue = `scale(${(scaleNumber - 25) / 100})`;
+    scaleImage.style.transform = tramsformValue;
+  }
+});
+
+scaleBigger.addEventListener('click', () => {
+  scaleNumber = getScaleNumber(scaleValue);
+  if(getScaleNumber(scaleValue) < 100) {
+    scaleValue.value = `${scaleNumber + 25}%`;
+    const tramsformValue = `scale(${(scaleNumber + 25) / 100})`;
+    scaleImage.style.transform = tramsformValue;
+  }
+});
 
 export {onDocumentKeydown};
