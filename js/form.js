@@ -1,5 +1,7 @@
 import {isEscapeKey} from './util.js';
 import {pristine} from './form-validate.js';
+import {changeOriginalEffect} from './form-slider.js';
+import './form-slider.js';
 
 const SCALE_STEP = 25;
 const SCALE_MIN = 25;
@@ -54,6 +56,8 @@ const openForm = () => {
   // Изменяем значение scaleValue.value(строка с масштабом в %)
   scaleSmaller.addEventListener('click', onMinButtonClick);
   scaleBigger.addEventListener('click', onMaxButtonClick);
+  // При открытии формы не должно быть видно слайдера эффектов и показан оригинал фотографии(буз применения эффектов)
+  changeOriginalEffect();
 };
 
 // После выбора изображения (изменения значения поля .img-upload__input), показывается форма редактирования изображения.
@@ -74,6 +78,7 @@ const closeForm = () => {
   // сбрасываем значение формы
   imageUploadForm.reset();
   pristine.reset();
+  scaleImage.style.transform = '';
 };
 
 // Функция закрытия формы по клику на крестик
