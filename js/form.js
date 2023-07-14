@@ -1,7 +1,6 @@
 import {isEscapeKey} from './util.js';
 import {pristine} from './form-validate.js';
-import {changeOriginalEffect} from './form-slider.js';
-import './form-slider.js';
+import {changeOriginalEffect, onEffectListChange} from './form-slider.js';
 
 const SCALE_STEP = 25;
 const SCALE_MIN = 25;
@@ -14,6 +13,8 @@ const imageUploadInput = document.querySelector('.img-upload__input');
 const formEditor = document.querySelector('.img-upload__overlay');
 // Кнопка закрытия формы
 const uploadCancelButton = document.querySelector('.img-upload__cancel');
+// Список всех фильтров
+const effecstList = document.querySelector('.effects__list');
 
 // <Масштаб изображения>
 const scaleSmaller = document.querySelector('.scale__control--smaller');
@@ -58,6 +59,8 @@ const openForm = () => {
   scaleBigger.addEventListener('click', onMaxButtonClick);
   // При открытии формы не должно быть видно слайдера эффектов и показан оригинал фотографии(буз применения эффектов)
   changeOriginalEffect();
+  // Изменяем тип и интенсивность фильтра
+  effecstList.addEventListener('change', onEffectListChange);
 };
 
 // После выбора изображения (изменения значения поля .img-upload__input), показывается форма редактирования изображения.
@@ -75,6 +78,7 @@ const closeForm = () => {
   window.removeEventListener('keydown', onDocumentKeydown);
   scaleSmaller.removeEventListener('click', onMinButtonClick);
   scaleBigger.removeEventListener('click', onMaxButtonClick);
+  effecstList.removeEventListener('change', onEffectListChange);
   // сбрасываем значение формы
   imageUploadForm.reset();
   pristine.reset();

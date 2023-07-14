@@ -1,7 +1,5 @@
 // Элемент, в который будет отрисовывать слайдер
 const sliderElement = document.querySelector('.img-upload__effect-level');
-// Список всех фильтров
-const effecstList = document.querySelector('.effects__list');
 //  Уровень эффекта записывается в поле .effect-level__value
 const effectLevelValue = document.querySelector('.effect-level__value');
 // При изменении уровня интенсивности эффекта, CSS-стили картинки внутри .img-upload__preview обновляются
@@ -15,6 +13,7 @@ noUiSlider.create(sliderElement, {
   },
   start: 1,
   step: 0.1,
+  connect: 'lower',
 });
 
 // Изменяем параметры слайдера
@@ -29,45 +28,50 @@ const changeSlider = (min, max, step, start) => {
   });
 };
 
-// Изменяем значение/уровень эффекта в поле .effect-level__value
-const onSliderUpdate = () => {
-  effectLevelValue.value = sliderElement.noUiSlider.get();
-};
-
-// Подписываемся на событие 'update' у слайдера, чтобы при изменении положения слайдера, изменять значение/уровень эффекта в поле .effect-level__value
-sliderElement.noUiSlider.on('update', onSliderUpdate);
-
 // Для эффекта «Оригинал» CSS-стили filter удаляются, слайдер и его контейнер (элемент .img-upload__effect-level) скрываются.
 const changeOriginalEffect = () => {
   imagePreview.style.filter = '';
   sliderElement.classList.add('hidden');
 };
 
-// Определяем на какой эффект кликнули (находится в фокусе)
-effecstList.addEventListener('click', (evt) => {
+// Изменяем интенсивность применяемого фильтра в зависимости от передвижения слайдера
+const changeValueEffect = (effect, unitMeasurement) => {
+  sliderElement.noUiSlider.on('update', () => {
+    // Связываем движение слайдера со значением effectLevelValue
+    effectLevelValue.value = sliderElement.noUiSlider.get();
+    // Подставляем данные
+    imagePreview.style.filter = `${effect}(${effectLevelValue.value}${unitMeasurement})`;
+  });
+};
+
+// Определяем какой элемент выбрали и применяем необходимый тип фильтра + значение
+const onEffectListChange = (evt) => {
   const target = evt.target.id;
   sliderElement.classList.remove('hidden');
   if (target === 'effect-chrome') {
     // Для эффекта «Хром» — filter: grayscale(0..1) с шагом 0.1;
-    imagePreview.style.filter = `grayscale(${effectLevelValue.value})`;
+    changeSlider (0, 1, 0.1, 1);
+    changeValueEffect('grayscale', '');
   } else if (target === 'effect-sepia') {
     // Для эффекта «Сепия» — filter: sepia(0..1) с шагом 0.1;
-    imagePreview.style.filter = `sepia(${effectLevelValue.value})`;
+    changeSlider (0, 1, 0.1, 1);
+    changeValueEffect('sepia', '');
   } else if (target === 'effect-marvin') {
     // Для эффекта «Марвин» — filter: invert(0..100%) с шагом 1%;
     changeSlider (1, 100, 1, 100);
-    imagePreview.style.filter = `invert(${effectLevelValue.value}%)`;
+    changeValueEffect('invert', '%');
   } else if (target === 'effect-phobos') {
     // Для эффекта «Фобос» — filter: blur(0..3px) с шагом 0.1px;
     changeSlider (1, 3, 0.1, 3);
-    imagePreview.style.filter = `blur(${effectLevelValue.value}px)`;
+    changeValueEffect('blur', 'px');
   } else if (target === 'effect-heat') {
     // Для эффекта «Зной» — filter: brightness(1..3) с шагом 0.1;
-    imagePreview.style.filter = `brightness(${effectLevelValue.value})`;
+    changeSlider (1, 3, 0.1, 3);
+    changeValueEffect('brightness', '');
   } else if (target === 'effect-none') {
     changeOriginalEffect();
   }
-});
+};
 
-export {changeOriginalEffect};
+export {changeOriginalEffect, onEffectListChange};
 
