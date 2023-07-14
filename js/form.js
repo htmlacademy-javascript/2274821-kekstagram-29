@@ -1,6 +1,5 @@
 import {isEscapeKey} from './util.js';
 import {pristine} from './form-validate.js';
-import './form-slider.js';
 
 const SCALE_STEP = 25;
 const SCALE_MIN = 25;
