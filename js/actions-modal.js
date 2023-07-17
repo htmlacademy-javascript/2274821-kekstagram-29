@@ -1,10 +1,8 @@
 // Показывает и скрывает модальное окно
 const QUANTITY_OF_COMMENTS = 5;
 
-import {getData} from './api.js';
 import {isEscapeKey} from './util.js';
-import { showAlert } from './util.js';
-
+import { data } from './api.js';
 const collectionPosts = document.querySelector('.pictures');
 const bigPhotoModal = document.querySelector('.big-picture');
 const closeBigPhotoModal = document.querySelector('.big-picture__cancel');
@@ -72,7 +70,7 @@ const createComments = (comments) => {
 };
 
 // Функция, которая получает id поста, на который кликнули и подставляет в модальное окно его данные
-const createModalContent = (postId, data) => {
+const createModalContent = (postId) => {
   const currentPost = data.find((post) => postId === post.id);
   const {likes, url, comments, description} = currentPost;
   bigPhotoImage.src = url;
@@ -122,17 +120,6 @@ const showComments = () => {
   }
 };
 
-const renderPost = async (postId) => {
-  try {
-    const data = await getData();
-    createModalContent(postId, data);
-    showComments();
-    openModal();
-  } catch (err) {
-    showAlert(err.message);
-  }
-};
-
 // Показывает наполненное окно по клику
 collectionPosts.addEventListener('click', (evt) => {
   bigPhotoComments.innerHTML = '';
@@ -140,7 +127,9 @@ collectionPosts.addEventListener('click', (evt) => {
   let postId;
   if(target !== null) {
     postId = Number(target.dataset.id);
-    renderPost(postId);
+    createModalContent(postId, data);
+    showComments();
+    openModal();
   }
 });
 
