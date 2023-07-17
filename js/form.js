@@ -99,4 +99,4 @@ function onDocumentKeydown (evt) {
   }
 }
 
-export {onDocumentKeydown};
+export {onDocumentKeydown, closeForm };

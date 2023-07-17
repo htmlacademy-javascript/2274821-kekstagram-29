@@ -1,6 +1,6 @@
-// Показываем ошибку
 const ALERT_SHOW_TIME = 5000;
 
+// Показываем ошибку на главной странице
 const showAlert = (message) => {
   const alert = document.createElement('div');
   alert.style.position = 'absolute';
