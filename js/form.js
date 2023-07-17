@@ -1,3 +1,4 @@
+// Форма загрузки фотографии
 import {isEscapeKey} from './util.js';
 import {pristine} from './form-validate.js';
 import {changeOriginalEffect, onEffectListChange} from './form-slider.js';
