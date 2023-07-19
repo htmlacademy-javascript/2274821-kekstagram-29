@@ -1,7 +1,8 @@
-import {onDocumentKeydown} from './form.js';
-
 const MAX_HASHTAG_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+
+import {onDocumentKeydown} from './form.js';
+
 const imageUploadForm = document.querySelector('.img-upload__form');
 const imageUploadText = document.querySelector('.img-upload__text');
 const formHashtag = imageUploadText.querySelector('.text__hashtags');
@@ -13,10 +14,6 @@ const pristine = new Pristine(imageUploadForm, {
   // Элемент, куда будет выводиться текст с ошибкой
   errorTextParent: 'img-upload__field-wrapper',
 });
-
-// первый аргумент - элемент формы, который мы хотим валидировать.
-// второй аргумент - функция проверки
-// третий аргумент - сообщение об ошибке
 
 const normilize = (value) => {
   // Убираем лишние пробелы по краям массива с комметами, разделяем хэштеги пробелами и передаем в новый массив те элементы, которые не пустые
@@ -69,12 +66,6 @@ const calcelEsc = (item) => {
 };
 calcelEsc(formHashtag);
 calcelEsc(formDescription);
-
-// Проверка валидации при отправке формы
-imageUploadForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
 
 export {imageUploadForm, pristine};
 

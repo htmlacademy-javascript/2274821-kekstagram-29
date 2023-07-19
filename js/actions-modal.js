@@ -132,4 +132,3 @@ collectionPosts.addEventListener('click', (evt) => {
     openModal();
   }
 });
-
