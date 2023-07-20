@@ -8,7 +8,7 @@ const Way = {
 
 const Method = {
   GET: 'GET',
-  POST: 'POST'
+  POST: 'POS'
 };
 
 const ErrorText = {

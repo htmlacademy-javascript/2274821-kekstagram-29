@@ -13,48 +13,65 @@ const ButtonClass = {
   SUCCESS: '.success__button',
 };
 
-// Закрытие при нажатии на кнопку
-const closeMessage = () => {
-  const messageElement = successMessage || errorMessage;
-  messageElement.remove();
-  // Удаляем ненужные обработчики
+const Messages = {
+  ERROR: errorMessage,
+  SUCCESS: successMessage,
+};
+
+// Удаляем ненужные обработчики
+const deleteUnnecessaryListeners = () => {
   document.removeEventListener('keydown', onDocumentKeydown);
   document.removeEventListener('click', onBodyClick);
 };
 
+// Закрытие при нажатии на кнопку (успешно)
+const closeSuccessMessage = () => {
+  Messages.SUCCESS.remove();
+  deleteUnnecessaryListeners();
+};
+
+// Закрытие при нажатии на кнопку (ошибка)
+const closeErrorMessage = () => {
+  Messages.ERROR.remove();
+  deleteUnnecessaryListeners();
+};
+
 // Показываем сообщение после отправки формы
-const showMessage = (messageElement, closeButtonClass) => {
+const showMessage = (message, buttonMessage, closeMessage) => {
   // Разметку сообщения, которая находится в блоке #success внутри шаблона template, нужно разместить перед закрывающим тегом </body>
-  document.body.append(messageElement);
+  document.body.append(message);
   // Сообщение должно исчезать после нажатия на кнопку .success__button
-  messageElement.querySelector(closeButtonClass).addEventListener('click', closeMessage);
+  message.querySelector(buttonMessage).addEventListener('click', closeMessage);
   // Сообщение должно исчезать по нажатию на клавишу Esc
   document.addEventListener('keydown', onDocumentKeydown);
   // Сообщение должно исчезать по клику на произвольную область экрана за пределами блока с сообщением
   document.addEventListener('click', onBodyClick);
 };
 
+// Закрыть все окна с сообщениями
+const closeAll = () => {
+  closeSuccessMessage();
+  closeErrorMessage();
+};
+
 // Функция закрытия сообщения формы по кнопке ESС
 function onDocumentKeydown (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeMessage();
+    closeAll();
   }
 }
 
 // Определяем был ли клик за пределами блока с сообщением
 function onBodyClick (evt) {
-  if (evt.target.closest('.error__button') || evt.target.closest('.success__button')) {
+  if (evt.target.closest('.error__inner') || evt.target.closest('.success__inner')) {
     return;
   }
-  closeMessage();
+  closeAll();
 }
 
-// Показываем окно с успешной отправкой формы
-const showSuccessMessage = () => showMessage(successMessage, ButtonClass.SUCCESS);
-
-// Показываем окно с ошибкой отправки формы
-const showErrorMessage = () => showMessage(errorMessage, ButtonClass.ERROR);
+const showSuccessMessage = () => showMessage(Messages.SUCCESS, ButtonClass.SUCCESS, closeSuccessMessage);
+const showErrorMessage = () => showMessage(Messages.ERROR, ButtonClass.ERROR, closeErrorMessage);
 
 // Блокировка кнопки отправки формы
 const blockUploadButton = () => {
