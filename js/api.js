@@ -1,7 +1,7 @@
 // Получение данных
 const URL = 'https://29.javascript.pages.academy/kekstagram';
 
-const Way = {
+const Route = {
   GET: '/data',
   POST: '',
 };
@@ -16,9 +16,9 @@ const ErrorText = {
   POST: 'Не удалось отправить форму. Попробуйте еще раз',
 };
 
-const load = async (way, errorText, method = Method.GET, body = null) => {
+const load = async (route, errorText, method = Method.GET, body = null) => {
   try {
-    const response = await fetch(`${URL}${way}`, {method, body});
+    const response = await fetch(`${URL}${route}`, {method, body});
     if (!response.ok) {
       throw new Error();
     }
@@ -28,9 +28,9 @@ const load = async (way, errorText, method = Method.GET, body = null) => {
   }
 };
 
-const getData = () => load(Way.GET, ErrorText.GET);
+const getData = () => load(Route.GET, ErrorText.GET);
 
-const sendData = (body) => load(Way.POST, ErrorText.POST, Method.POST, body);
+const sendData = (body) => load(Route.POST, ErrorText.POST, Method.POST, body);
 
 const data = await getData();
 
