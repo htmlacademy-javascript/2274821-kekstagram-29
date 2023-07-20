@@ -1,4 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
+const FILTER_SHOW_PHOTO = 10;
 
 // Показываем ошибку на главной странице
 const showAlert = (message) => {
@@ -21,4 +22,31 @@ const showAlert = (message) => {
 // Проверка, является ли нажатая кнопка Esc
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {showAlert, isEscapeKey};
+// Генерация случайного числа в диапазоне, т.к. в данном случае колличество фотографий с сервера ограничено
+const getRandomInteger = (a, b) => {
+  const lower = Math.ceil(Math.min(a, b));
+  const upper = Math.floor(Math.max(a, b));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
+};
+
+// Генерация массива из FILTER_SHOW_PHOTO (10) неповторяющихся чисел
+const generateArrayUniqueNumbers = (a, b) => {
+  const numbers = [];
+  while (numbers.length < FILTER_SHOW_PHOTO) {
+    const randomNumber = getRandomInteger(a, b);
+    let found = false;
+    for (let i = 0; i < numbers.length; i++) {
+      if (numbers[i] === randomNumber){
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      numbers[numbers.length] = randomNumber;
+    }
+  }
+  return numbers;
+};
+
+export {showAlert, isEscapeKey, generateArrayUniqueNumbers};
