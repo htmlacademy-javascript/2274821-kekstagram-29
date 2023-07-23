@@ -1,10 +1,13 @@
+const SCALE_STEP = 25;
+const SCALE_MIN = 25;
+const SCALE_MAX = 100;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
+// Форма загрузки фотографии
 import {isEscapeKey} from './util.js';
 import {pristine} from './form-validate.js';
 import {changeOriginalEffect, onEffectListChange} from './form-slider.js';
 
-const SCALE_STEP = 25;
-const SCALE_MIN = 25;
-const SCALE_MAX = 100;
 // Форма
 const imageUploadForm = document.querySelector('.img-upload__form');
 // Поле для загрузки фотографий
@@ -15,6 +18,10 @@ const formEditor = document.querySelector('.img-upload__overlay');
 const uploadCancelButton = document.querySelector('.img-upload__cancel');
 // Список всех фильтров
 const effecstList = document.querySelector('.effects__list');
+
+// Загрузка изображения пользователя
+const fileChooser = document.querySelector('.img-upload__input');
+const preview = document.querySelector('.img-upload__preview').querySelector('img');
 
 // <Масштаб изображения>
 const scaleSmaller = document.querySelector('.scale__control--smaller');
@@ -98,4 +105,14 @@ function onDocumentKeydown (evt) {
   }
 }
 
-export {onDocumentKeydown};
+// Загрузка изображения пользователя
+fileChooser.addEventListener('change', () => {
+  const file = fileChooser.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((type) => fileName.endsWith(type));
+  if (matches) {
+    preview.src = URL.createObjectURL(file);
+  }
+});
+
+export {onDocumentKeydown, closeForm};
