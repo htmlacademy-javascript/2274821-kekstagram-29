@@ -7,6 +7,9 @@ const postTemplate = document.querySelector('#picture').content.querySelector('.
 
 // Склонируем шаблон и вставим в нужное место на странице, добавим данные, полученные с сервера
 const createMiniaturePosts = (posts) => {
+  // Удаляем загруженные ранее посты
+  const unnecessaryPosts = allPostsList.querySelectorAll('.picture');
+  unnecessaryPosts.forEach((element) => element.remove());
   // Cоздаем "коробочку"
   const allPosts = document.createDocumentFragment();
   posts.forEach(({id, url, description, likes, comments}) => {
