@@ -1,6 +1,6 @@
 // Сортировка миниатюр фотографий других пользователей
-
-import { createRandomPosts, showAlert } from './util.js';
+const RERENDER_DELAY = 500;
+import { createRandomPosts, showAlert, debounce } from './util.js';
 import { data } from './api.js';
 import { createMiniaturePosts } from './create-miniature-posts.js';
 
@@ -40,6 +40,10 @@ const renderPosts = async () => {
   }
 };
 
+// «устранение дребезга», чтобы при переключении фильтра обновление списка элементов,
+// подходящих под фильтры, происходило не чаще, чем один раз в полсекунды.
+const renderDebounce = debounce(renderPosts, RERENDER_DELAY);
+
 const renderSortedPosts = () => {
   renderPosts(currentFilter);
   imageFilters.classList.remove('img-filters--inactive');
@@ -50,7 +54,7 @@ const renderSortedPosts = () => {
     imageFilters.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
     evt.target.classList.add('img-filters__button--active');
     currentFilter = evt.target.id;
-    renderPosts(currentFilter);
+    renderDebounce(currentFilter);
   });
 };
 

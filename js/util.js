@@ -1,5 +1,6 @@
 const ALERT_SHOW_TIME = 5000;
 const FILTER_SHOW_PHOTO = 10;
+
 import {data} from './api.js';
 
 // Показываем ошибку на главной странице
@@ -62,4 +63,13 @@ const createRandomPosts = () => {
   return randomPosts;
 };
 
-export {showAlert, isEscapeKey, createRandomPosts};
+// «устранение дребезга»
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {showAlert, isEscapeKey, createRandomPosts, debounce};
