@@ -3,8 +3,7 @@
 // Массив с сервера
 import {data} from './api.js';
 import { createMiniaturePosts } from './create-miniature-posts.js';
-import { showAlert } from './util.js';
-import { generateArrayUniqueNumbers } from './util.js';
+import { showAlert, generateArrayUniqueNumbers} from './util.js';
 // Секция с фильтрами
 const imageFilters = document.querySelector('.img-filters');
 // По умолчанию
@@ -15,14 +14,12 @@ const imageFilterRandom = document.querySelector('#filter-random');
 const imageFilterDiscussed = document.querySelector('#filter-discussed');
 // Делаем копию массива с сервера
 const copyPosts = data.slice();
-
+// Сортировка по умолчанию(при открытии страницы)
 let currentFilter = imageFilterDefault.id;
 
-
 // <По умолчанию — фотографии в изначальном порядке с сервера - передаем в main полученный с сервера массив data>
-
 // <Случайные — 10 случайных, не повторяющихся фотографий>
-// Генерируем 10 неповторяющихся чисел
+// Генерируем 10 неповторяющихся чисел от 1 до 25, т.к. в данном случае массив с сервера содержит только 25 постов
 const randomNumbers = generateArrayUniqueNumbers(1, 25);
 const createRandomPosts = () => {
   const randomPosts = [];
@@ -41,21 +38,17 @@ const comparePosts = (postA, postB) => postB.comments.length - postA.comments.le
 // Показываем сначала посты с большим количеством комметариев
 const discussedData = copyPosts.sort(comparePosts);
 
-
 // Объект с вариантами сортировки постов
 const SortOption = {
   'filter-default': {
-    sortName: 'default',
     array: data,
     button: imageFilterDefault,
   },
   'filter-random': {
-    sortName: 'random',
     array: randomData,
     button: imageFilterRandom,
   },
   'filter-discussed': {
-    sortName: 'discussed',
     array: discussedData,
     button: imageFilterDiscussed,
   },
@@ -85,45 +78,3 @@ const renderSortedPosts = () => {
 };
 
 renderSortedPosts();
-
-  // switch (currentFilter) {
-  //   case Filter.RANDOM:
-  //     return renderRandomPosts();
-  //   case Filter.DISCUSSED:
-  //     return renderDiscussedPosts();
-  //   default:
-  //     return renderDefaultPosts();
-  // }
-
-//   // По умолч
-
-
-// // рандом
-// const renderRandomPosts = () => {
-//   try {
-//     createMiniaturePosts(randomData);
-//   } catch (err) {
-//     showAlert(err.message);
-//   }
-// };
-
-// // Комменты
-// const renderDiscussedPosts = () => {
-//   try {
-//     createMiniaturePosts(discussedData);
-//   } catch (err) {
-//     showAlert(err.message);
-//   }
-// };
-
-// Показываем посты в соответствии с нужным фильтром
-// const renderPosts = (filter) => {
-
-//   if (filter === imageFilterDefault) {
-//     renderDefaultPosts();
-//   } else if (filter === imageFilterRandom) {
-//     renderRandomPosts();
-//   } else if (filter === imageFilterDiscussed) {
-//     renderDiscussedPosts();
-//   }
-// };

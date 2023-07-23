@@ -22,6 +22,7 @@ const showAlert = (message) => {
 // Проверка, является ли нажатая кнопка Esc
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
+// Для сортировки постов
 // Генерация случайного числа в диапазоне, т.к. в данном случае колличество фотографий с сервера ограничено
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
