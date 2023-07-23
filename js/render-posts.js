@@ -16,13 +16,8 @@ const imageFilterDiscussed = document.querySelector('#filter-discussed');
 // Делаем копию массива с сервера
 const copyPosts = data.slice();
 
-const Filter = {
-  DEFAULT: 'filter-default',
-  RANDOM: 'filter-rendom',
-  DISCUSSED: 'filter-discussed',
-};
+let currentFilter = imageFilterDefault.id;
 
-let currentFilter = Filter.DEFAULT;
 
 // <По умолчанию — фотографии в изначальном порядке с сервера - передаем в main полученный с сервера массив data>
 
@@ -46,46 +41,37 @@ const comparePosts = (postA, postB) => postB.comments.length - postA.comments.le
 // Показываем сначала посты с большим количеством комметариев
 const discussedData = copyPosts.sort(comparePosts);
 
-// По умолч
-const renderDefaultPosts = () => {
-  try {
-    createMiniaturePosts(data);
-  } catch (err) {
-    showAlert(err.message);
-  }
+
+// Объект с вариантами сортировки постов
+const SortOption = {
+  'filter-default': {
+    sortName: 'default',
+    array: data,
+    button: imageFilterDefault,
+  },
+  'filter-random': {
+    sortName: 'random',
+    array: randomData,
+    button: imageFilterRandom,
+  },
+  'filter-discussed': {
+    sortName: 'discussed',
+    array: discussedData,
+    button: imageFilterDiscussed,
+  },
 };
 
-// рандом
-const renderRandomPosts = () => {
+const renderPosts = () => {
+  const array = SortOption[currentFilter].array;
   try {
-    createMiniaturePosts(randomData);
+    createMiniaturePosts(array);
   } catch (err) {
     showAlert(err.message);
-  }
-};
-
-// Комменты
-const renderDiscussedPosts = () => {
-  try {
-    createMiniaturePosts(discussedData);
-  } catch (err) {
-    showAlert(err.message);
-  }
-};
-
-// Показываем посты в соответствии с нужным фильтром
-const renderPosts = (filter) => {
-  if (filter === imageFilterDefault) {
-    renderDefaultPosts();
-  } else if (filter === imageFilterRandom) {
-    renderRandomPosts();
-  } else if (filter === imageFilterDiscussed) {
-    renderDiscussedPosts();
   }
 };
 
 const renderSortedPosts = () => {
-  renderDefaultPosts();
+  renderPosts(currentFilter);
   imageFilters.classList.remove('img-filters--inactive');
   imageFilters.addEventListener('click', (evt) => {
     if (!evt.target.classList.contains('img-filters__button')) {
@@ -93,7 +79,7 @@ const renderSortedPosts = () => {
     }
     imageFilters.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
     evt.target.classList.add('img-filters__button--active');
-    currentFilter = evt.target;
+    currentFilter = evt.target.id;
     renderPosts(currentFilter);
   });
 };
@@ -108,3 +94,36 @@ renderSortedPosts();
   //   default:
   //     return renderDefaultPosts();
   // }
+
+//   // По умолч
+
+
+// // рандом
+// const renderRandomPosts = () => {
+//   try {
+//     createMiniaturePosts(randomData);
+//   } catch (err) {
+//     showAlert(err.message);
+//   }
+// };
+
+// // Комменты
+// const renderDiscussedPosts = () => {
+//   try {
+//     createMiniaturePosts(discussedData);
+//   } catch (err) {
+//     showAlert(err.message);
+//   }
+// };
+
+// Показываем посты в соответствии с нужным фильтром
+// const renderPosts = (filter) => {
+
+//   if (filter === imageFilterDefault) {
+//     renderDefaultPosts();
+//   } else if (filter === imageFilterRandom) {
+//     renderRandomPosts();
+//   } else if (filter === imageFilterDiscussed) {
+//     renderDiscussedPosts();
+//   }
+// };
