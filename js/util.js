@@ -1,5 +1,6 @@
 const ALERT_SHOW_TIME = 5000;
 const FILTER_SHOW_PHOTO = 10;
+import {data} from './api.js';
 
 // Показываем ошибку на главной странице
 const showAlert = (message) => {
@@ -50,4 +51,15 @@ const generateArrayUniqueNumbers = (a, b) => {
   return numbers;
 };
 
-export {showAlert, isEscapeKey, generateArrayUniqueNumbers};
+// Генерируем 10 неповторяющихся чисел от 1 до 25, т.к. в данном случае массив с сервера содержит только 25 постов
+const randomNumbers = generateArrayUniqueNumbers(1, 25);
+const createRandomPosts = () => {
+  const randomPosts = [];
+  for (let i = 0; i < randomNumbers.length; i++) {
+    const posts = data.find((post) => randomNumbers[i] === post.id);
+    randomPosts.push(posts);
+  }
+  return randomPosts;
+};
+
+export {showAlert, isEscapeKey, createRandomPosts};
