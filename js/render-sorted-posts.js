@@ -31,10 +31,10 @@ const SortOption = {
   'filter-discussed': discussedData,
 };
 
-const renderPosts = async () => {
+const renderPosts = () => {
   const array = SortOption[currentFilter];
   try {
-    await createMiniaturePosts(array);
+    createMiniaturePosts(array);
   } catch (err) {
     showAlert(err.message);
   }

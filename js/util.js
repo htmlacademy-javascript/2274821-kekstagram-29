@@ -1,7 +1,7 @@
 const ALERT_SHOW_TIME = 5000;
 const FILTER_SHOW_PHOTO = 10;
 
-import {data} from './api.js';
+import { data } from './api.js';
 
 // Показываем ошибку на главной странице
 const showAlert = (message) => {
@@ -56,7 +56,7 @@ const generateArrayUniqueNumbers = (a, b) => {
 const randomNumbers = generateArrayUniqueNumbers(1, 25);
 const createRandomPosts = () => {
   const randomPosts = [];
-  for (let i = 0; i < randomNumbers.length; i++) {
+  for (let i = 0; i < randomNumbers.length - 1; i++) {
     const posts = data.find((post) => randomNumbers[i] === post.id);
     randomPosts.push(posts);
   }
@@ -72,4 +72,4 @@ const debounce = (callback, timeoutDelay) => {
   };
 };
 
-export {showAlert, isEscapeKey, createRandomPosts, debounce};
+export {createRandomPosts, showAlert, isEscapeKey, debounce};

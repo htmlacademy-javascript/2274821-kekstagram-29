@@ -5,4 +5,3 @@ import './form-validate.js';
 import './form-message.js';
 import { renderSortedPosts } from './render-sorted-posts.js';
 renderSortedPosts();
-
