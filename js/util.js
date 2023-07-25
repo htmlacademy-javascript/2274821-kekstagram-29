@@ -1,7 +1,6 @@
 const ALERT_SHOW_TIME = 5000;
 const FILTER_SHOW_PHOTO = 10;
 
-import { data } from './api.js';
 // Показываем ошибку
 function showAlert (message) {
   const alert = document.createElement('div');
@@ -53,22 +52,28 @@ const generateArrayUniqueNumbers = (a, b) => {
 
 // Генерируем 10 неповторяющихся чисел от 0 до 24, т.к. в данном случае массив с сервера содержит только 25 постов
 const randomNumbers = generateArrayUniqueNumbers(0, 24);
-const createRandomPosts = () => {
+const createRandomPosts = (array) => {
   const randomPosts = [];
   for (let i = 0; i < randomNumbers.length; i++) {
-    const posts = data.find((post) => randomNumbers[i] === post.id);
+    const posts = array.find((post) => randomNumbers[i] === post.id);
     randomPosts.push(posts);
   }
   return randomPosts;
 };
 
 // «устранение дребезга»
-const debounce = (callback, timeoutDelay) => {
-  let timeoutId;
-  return (...rest) => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+function debounce (callback, timeoutDelay) {
+  let isCooldown = false;
+  return function() {
+    if (isCooldown) {
+      return;
+    }
+    callback.apply(this, arguments);
+    isCooldown = true;
+    setTimeout(() => {
+      isCooldown = false;
+    }, timeoutDelay);
   };
-};
+}
 
 export {createRandomPosts, showAlert, isEscapeKey, debounce};
