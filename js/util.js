@@ -2,9 +2,8 @@ const ALERT_SHOW_TIME = 5000;
 const FILTER_SHOW_PHOTO = 10;
 
 import { data } from './api.js';
-
-// Показываем ошибку на главной странице
-const showAlert = (message) => {
+// Показываем ошибку
+function showAlert (message) {
   const alert = document.createElement('div');
   alert.style.position = 'absolute';
   alert.style.zIndex = '100';
@@ -19,7 +18,7 @@ const showAlert = (message) => {
   setTimeout(() => {
     alert.remove();
   }, ALERT_SHOW_TIME);
-};
+}
 
 // Проверка, является ли нажатая кнопка Esc
 const isEscapeKey = (evt) => evt.key === 'Escape';
@@ -52,11 +51,11 @@ const generateArrayUniqueNumbers = (a, b) => {
   return numbers;
 };
 
-// Генерируем 10 неповторяющихся чисел от 1 до 25, т.к. в данном случае массив с сервера содержит только 25 постов
-const randomNumbers = generateArrayUniqueNumbers(1, 25);
+// Генерируем 10 неповторяющихся чисел от 0 до 24, т.к. в данном случае массив с сервера содержит только 25 постов
+const randomNumbers = generateArrayUniqueNumbers(0, 24);
 const createRandomPosts = () => {
   const randomPosts = [];
-  for (let i = 0; i < randomNumbers.length - 1; i++) {
+  for (let i = 0; i < randomNumbers.length; i++) {
     const posts = data.find((post) => randomNumbers[i] === post.id);
     randomPosts.push(posts);
   }

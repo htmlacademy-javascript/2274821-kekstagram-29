@@ -64,7 +64,7 @@ const openForm = () => {
   // Изменяем значение scaleValue.value(строка с масштабом в %)
   scaleSmaller.addEventListener('click', onMinButtonClick);
   scaleBigger.addEventListener('click', onMaxButtonClick);
-  // При открытии формы не должно быть видно слайдера эффектов и показан оригинал фотографии(буз применения эффектов)
+  // При открытии формы не должно быть видно слайдера эффектов и показан оригинал фотографии(без применения эффектов)
   changeOriginalEffect();
   // Изменяем тип и интенсивность фильтра
   effecstList.addEventListener('change', onEffectListChange);
