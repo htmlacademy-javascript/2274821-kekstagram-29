@@ -42,7 +42,9 @@ const renderPosts = () => {
 
 // «устранение дребезга», чтобы при переключении фильтра обновление списка элементов,
 // подходящих под фильтры, происходило не чаще, чем один раз в полсекунды.
-const renderDebounce = debounce(renderPosts, RERENDER_DELAY);
+const renderDebounce = debounce(() => {
+  renderPosts();
+}, RERENDER_DELAY);
 
 const renderSortedPosts = () => {
   renderPosts(currentFilter);
