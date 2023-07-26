@@ -3,6 +3,7 @@ const QUANTITY_OF_COMMENTS = 5;
 
 import {isEscapeKey} from './util.js';
 import { data } from './api.js';
+
 const collectionPosts = document.querySelector('.pictures');
 const bigPhotoModal = document.querySelector('.big-picture');
 const closeBigPhotoModal = document.querySelector('.big-picture__cancel');
@@ -42,6 +43,7 @@ const openModal = () => {
   window.addEventListener('keydown', onDocumentKeydown);
   // После открытия окна добавьте тегу <body> класс modal-open, чтобы контейнер с фотографиями позади не прокручивался при скролле.
   document.body.classList.add('modal-open');
+  window.removeEventListener('keydown', onDocumentKeydown);
 };
 
 // Функция закрытия модального окна по кнопке ESС

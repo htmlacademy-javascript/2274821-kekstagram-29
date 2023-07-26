@@ -9,7 +9,7 @@ const Route = {
 
 const Method = {
   GET: 'GET',
-  POST: 'POST'
+  POST: 'POS'
 };
 
 const ErrorText = {
@@ -26,6 +26,7 @@ const load = async (route, errorText, method = Method.GET, body = null) => {
     return response.json();
   } catch {
     showAlert(errorText);
+    throw new Error(errorText);
   }
 };
 

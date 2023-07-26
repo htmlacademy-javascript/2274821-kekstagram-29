@@ -74,14 +74,15 @@ const sendDataSuccess = async (data) => {
   }
 };
 
+
 // Отправка формы или показ ошибки (проверка валидации, показ соответствующего окна, сбор информации с формы в formData)
-imageUploadForm.addEventListener('submit', async (evt) => {
+imageUploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
     blockUploadButton();
     const formData = new FormData(evt.target);
-    await sendDataSuccess(formData);
+    sendDataSuccess(formData);
     unblockUploadButton();
   }
 });
