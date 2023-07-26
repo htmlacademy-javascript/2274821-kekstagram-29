@@ -83,8 +83,8 @@ const createModalContent = (postId) => {
 const showPartComments = () => {
   shownComments.textContent = countShownComments;
   const part = arrayOfComments.slice(countPartComments, countShownComments);
-  for (let a = 0; a < part.length; a++) {
-    bigPhotoComments.append(part[a]);
+  for (let j = 0; j < part.length; j++) {
+    bigPhotoComments.append(part[j]);
   }
 };
 

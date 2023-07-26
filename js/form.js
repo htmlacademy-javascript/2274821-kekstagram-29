@@ -21,13 +21,14 @@ const effecstList = document.querySelector('.effects__list');
 
 // Загрузка изображения пользователя
 const fileChooser = document.querySelector('.img-upload__input');
-const preview = document.querySelector('.img-upload__preview').querySelector('img');
+const scaleImage = document.querySelector('.img-upload__preview');
+const preview = scaleImage.querySelector('img');
 
 // <Масштаб изображения>
 const scaleSmaller = document.querySelector('.scale__control--smaller');
 const scaleBigger = document.querySelector('.scale__control--bigger');
 const scaleValue = document.querySelector('.scale__control--value');
-const scaleImage = document.querySelector('.img-upload__preview');
+
 let scaleNumber;
 
 // <Масштаб изображения>
@@ -39,7 +40,7 @@ const onMinButtonClick = () => {
   scaleNumber = getScaleNumber(scaleValue);
   if(scaleNumber > SCALE_MIN) {
     scaleValue.value = `${scaleNumber - SCALE_STEP}%`;
-    scaleImage.style.transform = `scale(${(scaleNumber - SCALE_STEP) / 100})`;
+    preview.style.transform = `scale(${(scaleNumber - SCALE_STEP) / 100})`;
   }
 };
 
@@ -48,7 +49,7 @@ const onMaxButtonClick = () => {
   scaleNumber = getScaleNumber(scaleValue);
   if(scaleNumber < SCALE_MAX) {
     scaleValue.value = `${scaleNumber + SCALE_STEP}%`;
-    scaleImage.style.transform = `scale(${(scaleNumber + SCALE_STEP) / 100})`;
+    preview.style.transform = `scale(${(scaleNumber + SCALE_STEP) / 100})`;
   }
 };
 
@@ -64,7 +65,7 @@ const openForm = () => {
   // Изменяем значение scaleValue.value(строка с масштабом в %)
   scaleSmaller.addEventListener('click', onMinButtonClick);
   scaleBigger.addEventListener('click', onMaxButtonClick);
-  // При открытии формы не должно быть видно слайдера эффектов и показан оригинал фотографии(буз применения эффектов)
+  // При открытии формы не должно быть видно слайдера эффектов и показан оригинал фотографии(без применения эффектов)
   changeOriginalEffect();
   // Изменяем тип и интенсивность фильтра
   effecstList.addEventListener('change', onEffectListChange);
