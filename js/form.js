@@ -23,6 +23,7 @@ const effecstList = document.querySelector('.effects__list');
 const fileChooser = document.querySelector('.img-upload__input');
 const scaleImage = document.querySelector('.img-upload__preview');
 const preview = scaleImage.querySelector('img');
+const smallPreviews = document.querySelectorAll('.effects__preview');
 
 // <Масштаб изображения>
 const scaleSmaller = document.querySelector('.scale__control--smaller');
@@ -106,6 +107,7 @@ function onDocumentKeydown (evt) {
   }
 }
 
+
 // Загрузка изображения пользователя
 fileChooser.addEventListener('change', () => {
   const file = fileChooser.files[0];
@@ -113,6 +115,9 @@ fileChooser.addEventListener('change', () => {
   const matches = FILE_TYPES.some((type) => fileName.endsWith(type));
   if (matches) {
     preview.src = URL.createObjectURL(file);
+    smallPreviews.forEach((smallPreview) => {
+      smallPreview.style.backgroundImage = `  url('${preview.src}')`;
+    });
   }
 });
 

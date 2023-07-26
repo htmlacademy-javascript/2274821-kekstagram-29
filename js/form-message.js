@@ -24,7 +24,7 @@ const closeMessage = () => {
 const showMessage = (message, buttonMessage) => {
   // Разметку сообщения, которая находится в блоке #success внутри шаблона template, нужно разместить перед закрывающим тегом </body>
   document.body.append(message);
-  // Сообщение должно исчезать после нажатия на кнопку .success__button
+  // Сообщение должно исчезать после нажатия на кнопку
   message.querySelector(buttonMessage).addEventListener('click', closeMessage);
   // Сообщение должно исчезать по нажатию на клавишу Esc
   document.addEventListener('keydown', onDocumentKeydown);
@@ -67,8 +67,8 @@ const unblockUploadButton = () => {
 const sendDataSuccess = async (data) => {
   try {
     await sendData(data);
-    closeForm();
     showSuccessMessage();
+    closeForm();
   } catch {
     showErrorMessage();
   }
@@ -85,4 +85,3 @@ imageUploadForm.addEventListener('submit', async (evt) => {
     unblockUploadButton();
   }
 });
-
