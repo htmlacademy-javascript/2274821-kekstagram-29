@@ -1,12 +1,12 @@
-const SCALE_STEP = 25;
-const SCALE_MIN = 25;
-const SCALE_MAX = 100;
-const FILE_TYPES = ['jpg', 'jpeg', 'png'];
-
 // Форма загрузки фотографии
 import {isEscapeKey} from './util.js';
 import {pristine} from './form-validate.js';
 import {changeOriginalEffect, onEffectListChange} from './form-slider.js';
+
+const SCALE_STEP = 25;
+const SCALE_MIN = 25;
+const SCALE_MAX = 100;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 // Форма
 const imageUploadForm = document.querySelector('.img-upload__form');

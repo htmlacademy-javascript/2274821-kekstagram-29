@@ -1,8 +1,9 @@
 // Сортировка миниатюр фотографий других пользователей
-const RERENDER_DELAY = 500;
 import { createRandomPosts, showAlert, debounce } from './util.js';
 import { data } from './api.js';
 import { createMiniaturePosts } from './create-miniature-posts.js';
+
+const RERENDER_DELAY = 500;
 
 // Секция с фильтрами
 const imageFilters = document.querySelector('.img-filters');
@@ -35,14 +36,14 @@ const createDiscussedData = () => {
 discussedData = createDiscussedData();
 
 // Объект с вариантами сортировки постов
-const SortOption = {
+const SortOptions = {
   'filter-default': data,
   'filter-random': randomData,
   'filter-discussed': discussedData,
 };
 
 const renderPosts = () => {
-  const array = SortOption[currentFilter];
+  const array = SortOptions[currentFilter];
   try {
     createMiniaturePosts(array);
   } catch (err) {

@@ -4,14 +4,14 @@ import { pristine, imageUploadForm } from './form-validate.js';
 import { sendData } from './api.js';
 import { closeForm, onDocumentKeydown } from './form.js';
 
-const successMessage = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
-const errorMessage = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
-const uploadButton = document.querySelector('.img-upload__submit');
-
 const ButtonClass = {
   ERROR: '.error__button',
   SUCCESS: '.success__button',
 };
+
+const successMessage = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+const errorMessage = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+const uploadButton = document.querySelector('.img-upload__submit');
 
 const closeMessage = () => {
   const messages = document.querySelector('.error') || document.querySelector('.success');

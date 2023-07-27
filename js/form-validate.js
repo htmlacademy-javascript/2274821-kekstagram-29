@@ -1,7 +1,7 @@
+import {onDocumentKeydown} from './form.js';
+
 const MAX_HASHTAG_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
-
-import {onDocumentKeydown} from './form.js';
 
 const imageUploadForm = document.querySelector('.img-upload__form');
 const imageUploadText = document.querySelector('.img-upload__text');

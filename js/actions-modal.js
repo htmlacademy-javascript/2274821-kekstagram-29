@@ -1,8 +1,8 @@
 // Показывает и скрывает модальное окно
-const QUANTITY_OF_COMMENTS = 5;
-
 import {isEscapeKey} from './util.js';
 import { data } from './api.js';
+
+const QUANTITY_OF_COMMENTS = 5;
 
 const collectionPosts = document.querySelector('.pictures');
 const bigPhotoModal = document.querySelector('.big-picture');
