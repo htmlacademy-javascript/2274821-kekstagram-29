@@ -1,7 +1,7 @@
+import {onDocumentKeydown} from './form.js';
+
 const MAX_HASHTAG_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
-
-import {onDocumentKeydown} from './form.js';
 
 const imageUploadForm = document.querySelector('.img-upload__form');
 const imageUploadText = document.querySelector('.img-upload__text');
@@ -15,16 +15,16 @@ const pristine = new Pristine(imageUploadForm, {
   errorTextParent: 'img-upload__field-wrapper',
 });
 
-const normilize = (value) => {
+const normalizeString = (value) => {
   // Убираем лишние пробелы по краям массива с комметами, разделяем хэштеги пробелами и передаем в новый массив те элементы, которые не пустые
-  const noNormilizeArray = value.trim().split(' ');
-  const normilizeArray = noNormilizeArray.filter((tag) => tag.length > 0);
-  return normilizeArray;
+  const noNormalizedArray = value.trim().split(' ');
+  const normalizedArray = noNormalizedArray.filter((tag) => tag.length > 0);
+  return normalizedArray;
 };
 
 // Для разных ошибок показываются разные сообщения. Следует разделять случаи, когда:
 // 1. введён невалидный хэш-тег;
-const isValidateTextHashtag = (textHashtag) => normilize(textHashtag).every((tag) => VALID_SYMBOLS.test(tag));
+const isValidateTextHashtag = (textHashtag) => normalizeString(textHashtag).every((tag) => VALID_SYMBOLS.test(tag));
 
 pristine.addValidator(
   formHashtag,
@@ -33,7 +33,7 @@ pristine.addValidator(
 );
 
 // 2. превышено количество хэш-тегов;
-const isValidCountHashtag = (textHashtag) => normilize(textHashtag).length <= MAX_HASHTAG_COUNT;
+const isValidCountHashtag = (textHashtag) => normalizeString(textHashtag).length <= MAX_HASHTAG_COUNT;
 
 pristine.addValidator(
   formHashtag,
@@ -44,7 +44,7 @@ pristine.addValidator(
 // 3. хэш-теги повторяются.
 const isUniqueHashtag = (textHashtag) => {
   // т.к. хэштеги не чувствительны к регистру, приведем все к строчным буквам
-  const lowerCase = normilize(textHashtag).map((tag) => tag.toLowerCase());
+  const lowerCase = normalizeString(textHashtag).map((tag) => tag.toLowerCase());
   return lowerCase.length === new Set(lowerCase).size;
 };
 

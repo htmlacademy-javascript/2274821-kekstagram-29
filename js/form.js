@@ -1,12 +1,13 @@
-const SCALE_STEP = 25;
-const SCALE_MIN = 25;
-const SCALE_MAX = 100;
-const FILE_TYPES = ['jpg', 'jpeg', 'png'];
-
 // Форма загрузки фотографии
 import {isEscapeKey} from './util.js';
 import {pristine} from './form-validate.js';
 import {changeOriginalEffect, onEffectListChange} from './form-slider.js';
+
+const SCALE_STEP = 25;
+const SCALE_MIN = 25;
+const SCALE_MAX = 100;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+const DIVISION_NUMBERS = 100;
 
 // Форма
 const imageUploadForm = document.querySelector('.img-upload__form');
@@ -23,6 +24,7 @@ const effecstList = document.querySelector('.effects__list');
 const fileChooser = document.querySelector('.img-upload__input');
 const scaleImage = document.querySelector('.img-upload__preview');
 const preview = scaleImage.querySelector('img');
+const smallPreviews = document.querySelectorAll('.effects__preview');
 
 // <Масштаб изображения>
 const scaleSmaller = document.querySelector('.scale__control--smaller');
@@ -40,7 +42,7 @@ const onMinButtonClick = () => {
   scaleNumber = getScaleNumber(scaleValue);
   if(scaleNumber > SCALE_MIN) {
     scaleValue.value = `${scaleNumber - SCALE_STEP}%`;
-    preview.style.transform = `scale(${(scaleNumber - SCALE_STEP) / 100})`;
+    preview.style.transform = `scale(${(scaleNumber - SCALE_STEP) / DIVISION_NUMBERS})`;
   }
 };
 
@@ -49,7 +51,7 @@ const onMaxButtonClick = () => {
   scaleNumber = getScaleNumber(scaleValue);
   if(scaleNumber < SCALE_MAX) {
     scaleValue.value = `${scaleNumber + SCALE_STEP}%`;
-    preview.style.transform = `scale(${(scaleNumber + SCALE_STEP) / 100})`;
+    preview.style.transform = `scale(${(scaleNumber + SCALE_STEP) / DIVISION_NUMBERS})`;
   }
 };
 
@@ -113,6 +115,9 @@ fileChooser.addEventListener('change', () => {
   const matches = FILE_TYPES.some((type) => fileName.endsWith(type));
   if (matches) {
     preview.src = URL.createObjectURL(file);
+    smallPreviews.forEach((smallPreview) => {
+      smallPreview.style.backgroundImage = `  url('${preview.src}')`;
+    });
   }
 });
 
