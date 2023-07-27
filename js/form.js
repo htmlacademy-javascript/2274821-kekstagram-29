@@ -7,6 +7,8 @@ const SCALE_STEP = 25;
 const SCALE_MIN = 25;
 const SCALE_MAX = 100;
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+const DIVISION_NUMBERS = 100;
+
 
 // Форма
 const imageUploadForm = document.querySelector('.img-upload__form');
@@ -41,7 +43,7 @@ const onMinButtonClick = () => {
   scaleNumber = getScaleNumber(scaleValue);
   if(scaleNumber > SCALE_MIN) {
     scaleValue.value = `${scaleNumber - SCALE_STEP}%`;
-    preview.style.transform = `scale(${(scaleNumber - SCALE_STEP) / 100})`;
+    preview.style.transform = `scale(${(scaleNumber - SCALE_STEP) / DIVISION_NUMBERS})`;
   }
 };
 
@@ -50,7 +52,7 @@ const onMaxButtonClick = () => {
   scaleNumber = getScaleNumber(scaleValue);
   if(scaleNumber < SCALE_MAX) {
     scaleValue.value = `${scaleNumber + SCALE_STEP}%`;
-    preview.style.transform = `scale(${(scaleNumber + SCALE_STEP) / 100})`;
+    preview.style.transform = `scale(${(scaleNumber + SCALE_STEP) / DIVISION_NUMBERS})`;
   }
 };
 
