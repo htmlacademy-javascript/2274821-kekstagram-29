@@ -9,6 +9,7 @@ const SCALE_MAX = 100;
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const DIVISION_NUMBERS = 100;
 
+
 // Форма
 const imageUploadForm = document.querySelector('.img-upload__form');
 // Поле для загрузки фотографий
