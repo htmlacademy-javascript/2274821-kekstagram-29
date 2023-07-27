@@ -1,8 +1,9 @@
 // Сортировка миниатюр фотографий других пользователей
-const RERENDER_DELAY = 500;
 import { createRandomPosts, showAlert, debounce } from './util.js';
 import { data } from './api.js';
 import { createMiniaturePosts } from './create-miniature-posts.js';
+
+const RERENDER_DELAY = 500;
 
 // Секция с фильтрами
 const imageFilters = document.querySelector('.img-filters');
@@ -10,29 +11,39 @@ const imageFilters = document.querySelector('.img-filters');
 const imageFilterDefault = document.querySelector('#filter-default');
 // Сортировка по умолчанию(при открытии страницы)
 let currentFilter = imageFilterDefault.id;
-
-// Делаем копию массива с сервера
-const copyPosts = data.slice();
+let discussedData;
+let randomData;
 
 // <По умолчанию — фотографии в изначальном порядке с сервера(data)
 // <Случайные — 10 случайных, не повторяющихся фотографий>
-const randomData = createRandomPosts(data);
+const createRandomData = () => {
+  if (data !== undefined) {
+    randomData = createRandomPosts(data);
+  }
+  return randomData;
+};
+randomData = createRandomData();
 
 // <Обсуждаемые — фотографии, отсортированные в порядке убывания количества комментариев>
-// Сортируем посты по убыванию количества коментариев
-const comparePosts = (postA, postB) => postB.comments.length - postA.comments.length;
-// Показываем сначала посты с большим количеством комметариев
-const discussedData = copyPosts.sort(comparePosts);
+const createDiscussedData = () => {
+  if (data !== undefined) {
+    const comparePosts = (postA, postB) => postB.comments.length - postA.comments.length;
+    // Показываем сначала посты с большим количеством комметариев
+    discussedData = data.slice().sort(comparePosts);
+  }
+  return discussedData;
+};
+discussedData = createDiscussedData();
 
 // Объект с вариантами сортировки постов
-const SortOption = {
+const SortOptions = {
   'filter-default': data,
   'filter-random': randomData,
   'filter-discussed': discussedData,
 };
 
 const renderPosts = () => {
-  const array = SortOption[currentFilter];
+  const array = SortOptions[currentFilter];
   try {
     createMiniaturePosts(array);
   } catch (err) {
@@ -48,7 +59,9 @@ const renderDebounce = debounce(() => {
 
 const renderSortedPosts = () => {
   renderPosts(currentFilter);
-  imageFilters.classList.remove('img-filters--inactive');
+  if (data !== undefined) {
+    imageFilters.classList.remove('img-filters--inactive');
+  }
   imageFilters.addEventListener('click', (evt) => {
     if (!evt.target.classList.contains('img-filters__button')) {
       return;

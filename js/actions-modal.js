@@ -1,8 +1,9 @@
 // Показывает и скрывает модальное окно
-const QUANTITY_OF_COMMENTS = 5;
-
 import {isEscapeKey} from './util.js';
 import { data } from './api.js';
+
+const QUANTITY_OF_COMMENTS = 5;
+
 const collectionPosts = document.querySelector('.pictures');
 const bigPhotoModal = document.querySelector('.big-picture');
 const closeBigPhotoModal = document.querySelector('.big-picture__cancel');
@@ -12,8 +13,6 @@ const bigPhotoCountComments = document.querySelector('.comments-count');
 const bigPhotoDescription = document.querySelector('.social__caption');
 const bigPhotoComments = document.querySelector('.social__comments');
 const templateComment = document.querySelector('.social__comment');
-const commentAvatar = templateComment.querySelector('.social__picture');
-const commentText = templateComment.querySelector('.social__text');
 const commentsLoader = document.querySelector('.comments-loader');
 const shownComments = document.querySelector('.shown-comments');
 const arrayOfComments = [];
@@ -60,9 +59,9 @@ const createComments = (comments) => {
     // Копируем "шаблон" комментария из разметки
     const comment = templateComment.cloneNode(true);
     // Заменяем данные
-    commentAvatar.src = avatar;
-    commentAvatar.alt = name;
-    commentText.textContent = message;
+    comment.querySelector('.social__picture').src = avatar;
+    comment.querySelector('.social__picture').alt = name;
+    comment.querySelector('.social__text').textContent = message;
     // Добавляем комментарии в массив
     arrayOfComments.push(comment);
   });
