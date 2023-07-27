@@ -43,7 +43,6 @@ const openModal = () => {
   window.addEventListener('keydown', onDocumentKeydown);
   // После открытия окна добавьте тегу <body> класс modal-open, чтобы контейнер с фотографиями позади не прокручивался при скролле.
   document.body.classList.add('modal-open');
-  window.removeEventListener('keydown', onDocumentKeydown);
 };
 
 // Функция закрытия модального окна по кнопке ESС

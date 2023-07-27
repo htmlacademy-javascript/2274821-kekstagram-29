@@ -2,7 +2,7 @@
 import { isEscapeKey } from './util.js';
 import { pristine, imageUploadForm } from './form-validate.js';
 import { sendData } from './api.js';
-import { closeForm } from './form.js';
+import { closeForm, onDocumentKeydown } from './form.js';
 
 const successMessage = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
 const errorMessage = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
@@ -16,24 +16,31 @@ const ButtonClass = {
 const closeMessage = () => {
   const messages = document.querySelector('.error') || document.querySelector('.success');
   messages.remove();
-  document.removeEventListener('keydown', onDocumentKeydown);
+  window.removeEventListener('keydown', onDocumentKeydownEsc);
   document.removeEventListener('click', onBodyClick);
+  // Если сообщение об ошибке закрыто, то возвращаем обработчик закрытия по ESC на саму форму
+  window.addEventListener('keydown', onDocumentKeydown);
 };
 
 // Показываем сообщение после отправки формы
 const showMessage = (message, buttonMessage) => {
-  // Разметку сообщения, которая находится в блоке #success внутри шаблона template, нужно разместить перед закрывающим тегом </body>
+  // Разметку сообщения, которая находится в блоке #success и #error внутри шаблона template, нужно разместить перед закрывающим тегом </body>
   document.body.append(message);
   // Сообщение должно исчезать после нажатия на кнопку
   message.querySelector(buttonMessage).addEventListener('click', closeMessage);
   // Сообщение должно исчезать по нажатию на клавишу Esc
-  document.addEventListener('keydown', onDocumentKeydown);
+  window.addEventListener('keydown', onDocumentKeydownEsc);
   // Сообщение должно исчезать по клику на произвольную область экрана за пределами блока с сообщением
   document.addEventListener('click', onBodyClick);
+  // Если переданное в функцию - сообщение об ошибке, то удаляем обработчик закрытия по ECS у самой формы
+  if (message === errorMessage) {
+    window.removeEventListener('keydown', onDocumentKeydown);
+  }
 };
 
 // Функция закрытия сообщения формы по кнопке ESС
-function onDocumentKeydown (evt) {
+// А onDocumentKeydown это функция закрытия самой формы по кнопке ESC
+function onDocumentKeydownEsc(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeMessage();
@@ -74,15 +81,14 @@ const sendDataSuccess = async (data) => {
   }
 };
 
-
 // Отправка формы или показ ошибки (проверка валидации, показ соответствующего окна, сбор информации с формы в formData)
-imageUploadForm.addEventListener('submit', (evt) => {
+imageUploadForm.addEventListener('submit', async (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
     blockUploadButton();
     const formData = new FormData(evt.target);
-    sendDataSuccess(formData);
+    await sendDataSuccess(formData);
     unblockUploadButton();
   }
 });

@@ -107,7 +107,6 @@ function onDocumentKeydown (evt) {
   }
 }
 
-
 // Загрузка изображения пользователя
 fileChooser.addEventListener('change', () => {
   const file = fileChooser.files[0];
